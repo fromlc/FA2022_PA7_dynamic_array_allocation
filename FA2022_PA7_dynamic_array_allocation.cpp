@@ -114,28 +114,22 @@ int getMode(int* pIa, int iaElementCount, int& occurred) {
 	// students watched between 0 and MAX_MOVIES, inclusive
 	int* pCounts = new int[MAX_MOVIES + 1];
 
-	// zero allocated array memory
+	// zero allocated int array memory
 	memset(pCounts, 0, (MAX_MOVIES + 1) * sizeof(int));
 
 	// count occurrences of each number of movies watched
 	for (int i = 0; i < iaElementCount; i++, pIa++) {
-
-		for (int z = 0; z <= MAX_MOVIES; z++) {
-			if (z == *pIa) {
-				pCounts[z]++;
-				break;
-			}
-		}
+		pCounts[*pIa]++;
 	}
 
-	// calculate mode
+	// #TODO find a single mode
 	int mode = 0;
 	occurred = 0;   // reference parameter tracks mode occurrences
 
 	// preserve original pointer to array for delete[]
 	int* pC = pCounts;
 
-	// find element that occurred most
+	// find the element that occurred the most times
 	for (int i = 0; i <= MAX_MOVIES; i++, pC++) {
 		if (*pC > occurred) {
 			mode = i;
@@ -158,10 +152,6 @@ int getMode(int* pIa, int iaElementCount, int& occurred) {
 	// release dynamically allocated array memory
 	delete[] pCounts;
 
-	// report no mode condition
-	if (occurred < 2) {
-		return NO_MODE;
-	}
-
-	return mode;
+	// report the mode, or no mode condition
+	return (occurred < 2) ? NO_MODE : mode;
 }
