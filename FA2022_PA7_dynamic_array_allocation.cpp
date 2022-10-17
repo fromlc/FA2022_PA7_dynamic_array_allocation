@@ -27,7 +27,7 @@ static constexpr int NO_MODE = -1;
 //------------------------------------------------------------------------------
 // local function prototypes
 //------------------------------------------------------------------------------
-void displayBanner();
+inline void displayBanner();
 int getNumStudents();
 void reportMode(int* moviesWatched, int numStudents);
 void getArrayData(int* moviesWatched, int numStudents);
@@ -41,7 +41,7 @@ int main() {
 	displayBanner();
 
 	// seed random number generator
-	srand((unsigned int)time(0));
+	srand((unsigned int) time(0));
 
 	// loop until the number of students entered is 0
 	int numStudents;
@@ -68,8 +68,9 @@ int main() {
 //------------------------------------------------------------------------------
 // display app banner
 //------------------------------------------------------------------------------
-void displayBanner() {
-	cout << "\nCalculate mode for number of movies that students watched\n\n";
+inline void displayBanner() {
+	cout << "\nCalculate mode for number of movies";
+	cout << " that students watched in one month\n\n";
 }
 
 //------------------------------------------------------------------------------
