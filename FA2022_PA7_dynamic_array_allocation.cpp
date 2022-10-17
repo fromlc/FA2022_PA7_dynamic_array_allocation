@@ -105,6 +105,7 @@ void reportMode(int* moviesWatched, int numStudents) {
 
 //------------------------------------------------------------------------------
 // -returns the mode of the passed int array of given element count
+// -#TODO calculates a single mode
 // -updates int reference parameter to number of times the mode occurred
 // -if no element occurred more than once, there is no mode
 //------------------------------------------------------------------------------
@@ -113,13 +114,8 @@ int getMode(int* pIa, int iaElementCount, int& occurred) {
 	// students watched between 0 and MAX_MOVIES, inclusive
 	int* pCounts = new int[MAX_MOVIES + 1];
 
-	// preserve original pointer to array
-	int* pC = pCounts;
-
-	// zero array memory
-	for (int i = 0; i <= MAX_MOVIES; i++, pC++) {
-		*pC = 0;
-	}
+	// zero allocated array memory
+	memset(pCounts, 0, (MAX_MOVIES + 1) * sizeof(int));
 
 	// count occurrences of each number of movies watched
 	for (int i = 0; i < iaElementCount; i++, pIa++) {
@@ -136,15 +132,29 @@ int getMode(int* pIa, int iaElementCount, int& occurred) {
 	int mode = 0;
 	occurred = 0;   // reference parameter tracks mode occurrences
 
-	// restore original pointer to array
-	pC = pCounts;
+	// preserve original pointer to array for delete[]
+	int* pC = pCounts;
 
+	// find element that occurred most
 	for (int i = 0; i <= MAX_MOVIES; i++, pC++) {
 		if (*pC > occurred) {
 			mode = i;
 			occurred = *pC;
 		}
 	}
+
+	// restore original pointer to first element of the array
+	pC = pCounts;
+
+	cout << '\n';
+
+	// report how many times each element occurred
+	for (int i = 0; i <= MAX_MOVIES; i++, pC++) {
+		if (*pC) {
+			cout << *pC << " students watched " << i << " movies\n";
+		}
+	}
+
 	// release dynamically allocated array memory
 	delete[] pCounts;
 
