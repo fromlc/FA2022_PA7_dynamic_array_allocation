@@ -123,12 +123,20 @@ int getMode(int* pIa, int iaElementCount, int& occurred) {
 	// find a single mode #TODO 
 	int mode = 0;
 
-	// count occurrences of each number of movies watched
+	// calculate mode
 	for (int i = 0; i < iaElementCount; i++, pIa++) {
-		pCounts[*pIa]++;
-		if (pCounts[*pIa] > occurred) {
-			occurred = pCounts[*pIa];
-			mode = *pIa;
+		// x is the number of movies that student #i watched
+		int x = *pIa;
+
+		//----------------------------------------------------------------------------
+		// -bump count of students that watched this number of movies
+		// -track the highest count of students so far
+		// -the corresponding number of movies watched will be the mode
+		//----------------------------------------------------------------------------
+
+		if (++(pCounts[x]) > occurred) {
+			occurred = pCounts[x];
+			mode = x;
 		}
 	}
 
