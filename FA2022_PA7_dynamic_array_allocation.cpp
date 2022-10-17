@@ -27,6 +27,7 @@ static constexpr int NO_MODE = -1;
 //------------------------------------------------------------------------------
 // local function prototypes
 //------------------------------------------------------------------------------
+void displayBanner();
 int getNumStudents();
 void reportMode(int* moviesWatched, int numStudents);
 void getArrayData(int* moviesWatched, int numStudents);
@@ -36,6 +37,9 @@ int getMode(int* ia, int iaElementCount, int& occurred);
 // entry point
 //------------------------------------------------------------------------------
 int main() {
+
+	displayBanner();
+
 	// seed random number generator
 	srand((unsigned int)time(0));
 
@@ -62,9 +66,17 @@ int main() {
 }
 
 //------------------------------------------------------------------------------
+// display app banner
+//------------------------------------------------------------------------------
+void displayBanner() {
+	cout << "\nCalculate mode for number of movies that students watched\n\n";
+}
+
+//------------------------------------------------------------------------------
 // returns number of students entered
 //------------------------------------------------------------------------------
 int getNumStudents() {
+
 	cout << "\nHow many students were surveyed? ";
 	int n;
 	cin >> n;
@@ -77,6 +89,7 @@ int getNumStudents() {
 // fill array with data, #TODO random numbers for now
 //------------------------------------------------------------------------------
 void getArrayData(int* pWatched, int numStudents) {
+
 	// fill int array with random numbers
 	for (int i = 0; i < numStudents; i++, pWatched++) {
 		*pWatched = rand() % MAX_MOVIES;
@@ -110,6 +123,7 @@ void reportMode(int* moviesWatched, int numStudents) {
 // -if no element occurred more than once, there is no mode
 //------------------------------------------------------------------------------
 int getMode(int* pIa, int iaElementCount, int& occurred) {
+
 	// track element occurrences with reference parameter
 	occurred = 0;
 
@@ -125,12 +139,13 @@ int getMode(int* pIa, int iaElementCount, int& occurred) {
 
 	// calculate mode
 	for (int i = 0; i < iaElementCount; i++, pIa++) {
+
 		// x is the number of movies that student #i watched
 		int x = *pIa;
 
 		//----------------------------------------------------------------------------
-		// -bump count of students that watched this number of movies
-		// -track the highest count of students so far
+		// -bump count of students that watched x movies
+		// -find the highest count of students watching the same number of movies
 		// -the corresponding number of movies watched will be the mode
 		//----------------------------------------------------------------------------
 
