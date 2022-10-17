@@ -4,9 +4,6 @@
 // Author: Gaddis 9E pp.554-555
 //------------------------------------------------------------------------------
 
-//  : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <cstdlib>
 #include <iostream>
 #include <string>
