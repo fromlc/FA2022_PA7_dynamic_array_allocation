@@ -105,49 +105,43 @@ void reportMode(int* moviesWatched, int numStudents) {
 
 //------------------------------------------------------------------------------
 // -returns the mode of the passed int array of given element count
-// -#TODO calculates a single mode
+// -calculates a single mode #TODO some data sets have two modes
 // -updates int reference parameter to number of times the mode occurred
 // -if no element occurred more than once, there is no mode
 //------------------------------------------------------------------------------
 int getMode(int* pIa, int iaElementCount, int& occurred) {
+	// track element occurrences with reference parameter
+	occurred = 0;
 
+	// dynamically allocate int array to hold counts of movies watched
 	// students watched between 0 and MAX_MOVIES, inclusive
 	int* pCounts = new int[MAX_MOVIES + 1];
 
 	// zero allocated int array memory
 	memset(pCounts, 0, (MAX_MOVIES + 1) * sizeof(int));
 
+	// find a single mode #TODO 
+	int mode = 0;
+
 	// count occurrences of each number of movies watched
 	for (int i = 0; i < iaElementCount; i++, pIa++) {
 		pCounts[*pIa]++;
-	}
-
-	// #TODO find a single mode
-	int mode = 0;
-	occurred = 0;   // reference parameter tracks mode occurrences
-
-	// preserve original pointer to array for delete[]
-	int* pC = pCounts;
-
-	// find the element that occurred the most times
-	for (int i = 0; i <= MAX_MOVIES; i++, pC++) {
-		if (*pC > occurred) {
-			mode = i;
-			occurred = *pC;
+		if (pCounts[*pIa] > occurred) {
+			occurred = pCounts[*pIa];
+			mode = *pIa;
 		}
 	}
 
-	// restore original pointer to first element of the array
-	pC = pCounts;
-
-	cout << '\n';
+	// preserve original pointer to allocated array memory for delete[]
+	int* pC = pCounts;
 
 	// report how many times each element occurred
 	for (int i = 0; i <= MAX_MOVIES; i++, pC++) {
 		if (*pC) {
-			cout << *pC << " students watched " << i << " movies\n";
+			cout << '\n' << *pC << " students watched " << i << " movies";
 		}
 	}
+	cout << '\n';
 
 	// release dynamically allocated array memory
 	delete[] pCounts;
