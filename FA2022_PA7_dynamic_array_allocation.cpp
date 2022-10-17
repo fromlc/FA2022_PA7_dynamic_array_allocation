@@ -28,8 +28,9 @@ static constexpr int NO_MODE = -1;
 // local function prototypes
 //------------------------------------------------------------------------------
 int getNumStudents();
+void reportMode(int* moviesWatched, int numStudents);
+void getArrayData(int* moviesWatched, int numStudents);
 int getMode(int* ia, int iaElementCount, int& occurred);
-void reportMode();
 
 //------------------------------------------------------------------------------
 // entry point
@@ -38,39 +39,26 @@ int main() {
 	// seed random number generator
 	srand((unsigned int)time(0));
 
+	// loop until the number of students entered is 0
 	int numStudents;
 	while ((numStudents = getNumStudents()) > 0) {
 
 		// dynamically allocate array for number of movies watched by each student
 		int* moviesWatched = new int[numStudents];
 
-		// preserve original pointer!
-		int* pi = moviesWatched;
+		// fill array with random data #TODO read from file?
+		getArrayData(moviesWatched, numStudents);
 
-		// fill int array with random numbers
-		for (int i = 0; i < numStudents; i++, pi++) {
-			*pi = rand() % MAX_MOVIES;
-			cout << "Student " << i + 1 << " watched: " << *pi << " movies\n";
-		}
-
-		int occurrenceCount = 0;
-		int mode = getMode(moviesWatched, numStudents, occurrenceCount);
-
-		if (mode == NO_MODE) {
-			cout << "\nNo mode\n";
-		}
-		else {
-			// report the mode of the moviesWatched array
-			cout << "\nMode " << mode
-				<< " occurred " << occurrenceCount << " times\n";
-		}
+		// find and display the mode of the array 
+		reportMode(moviesWatched, numStudents);
 
 		// release dynamically allocated array memory
 		delete[] moviesWatched;
 	}
 
-	return 0;
+	cout << "Goodbye!\n";
 
+	return 0;
 }
 
 //------------------------------------------------------------------------------
@@ -86,13 +74,41 @@ int getNumStudents() {
 }
 
 //------------------------------------------------------------------------------
+// fill array with data, #TODO random numbers for now
+//------------------------------------------------------------------------------
+void getArrayData(int* pWatched, int numStudents) {
+	// fill int array with random numbers
+	for (int i = 0; i < numStudents; i++, pWatched++) {
+		*pWatched = rand() % MAX_MOVIES;
+		cout << "Student " << i + 1 << " watched: " << *pWatched << " movies\n";
+	}
+}
+
+//------------------------------------------------------------------------------
+// display the mode of the passed array
+//------------------------------------------------------------------------------
+void reportMode(int* moviesWatched, int numStudents) {
+
+	// find the mode of the filled array
+	int occurrenceCount = 0;
+	int mode = getMode(moviesWatched, numStudents, occurrenceCount);
+
+	if (mode == NO_MODE) {
+		cout << "\nNo mode\n";
+	}
+	else {
+		// report the mode of the moviesWatched array
+		cout << "\nMode " << mode
+			<< " occurred " << occurrenceCount << " times\n";
+	}
+}
+
+//------------------------------------------------------------------------------
 // -returns the mode of the passed int array of given element count
 // -updates int reference parameter to number of times the mode occurred
 // -if no element occurred more than once, there is no mode
 //------------------------------------------------------------------------------
-int getMode(int* ia, int iaElementCount, int& occurred) {
-	// preserve original pointer
-	int* pIa = ia;
+int getMode(int* pIa, int iaElementCount, int& occurred) {
 
 	// students watched between 0 and MAX_MOVIES, inclusive
 	int* pCounts = new int[MAX_MOVIES + 1];
