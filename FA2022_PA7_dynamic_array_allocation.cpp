@@ -91,7 +91,7 @@ void getArrayData(int* pWatched, int numStudents) {
 	// fill int array with random numbers
 	for (int i = 0; i < numStudents; i++, pWatched++) {
 		*pWatched = rand() % MAX_MOVIES;
-		cout << "Student " << i + 1 << " watched: " << *pWatched << " movies\n";
+		cout << "Student " << i + 1 << " watched " << *pWatched << " movies\n";
 	}
 }
 
