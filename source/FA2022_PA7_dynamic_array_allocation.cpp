@@ -28,7 +28,8 @@ static constexpr int MAX_MOVIES_WATCHED = 10;
 //------------------------------------------------------------------------------
 inline void displayBanner();
 int getNumStudents();
-void displayMode(bool modeExists, int mode, int modeOccurs);
+void displayMode(RandomArray* p);
+void displayMean(RandomArray* p);
 
 //------------------------------------------------------------------------------
 // entry point
@@ -37,16 +38,13 @@ int main() {
 
 	displayBanner();
 
-
 	// loop until the number of students entered is 0
 	int numStudents;
 	while ((numStudents = getNumStudents()) > 0) {
 		RandomArray* pRa = new RandomArray(numStudents, MAX_MOVIES_WATCHED);
 
-		// find and display the mode of the array 
-		int mode, modeOccurs;
-		bool modeExists = pRa-> getMode(mode, modeOccurs);
-		displayMode(modeExists, mode, modeOccurs);
+		displayMode(pRa);
+		displayMean(pRa);
 
 		// release dynamically allocated array memory
 		delete pRa;
@@ -79,17 +77,25 @@ int getNumStudents() {
 }
 
 //------------------------------------------------------------------------------
-// display the mode of the passed array
+// display the array's mode
 //------------------------------------------------------------------------------
-void displayMode(bool modeExists, int mode, int modeOccurs) {
+void displayMode(RandomArray* p) {
+	int mode, modeOccurs;
 
-	if (!modeExists) {
+	if (!p->getMode(mode, modeOccurs)) {
 		cout << "\nThere is no mode, no element occurred more than once.\n";
 	}
 	else {
-		// report the mode of the moviesWatched array
 		cout << "\nMode " << mode
 			<< " occurred " << modeOccurs << " times\n";
 	}
+}
+
+//------------------------------------------------------------------------------
+// display the array's mean
+//------------------------------------------------------------------------------
+void displayMean(RandomArray* p) {
+
+	cout << "\nMean: " << p->getMean() << "\n";
 }
 

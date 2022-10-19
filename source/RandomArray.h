@@ -31,6 +31,8 @@ private:
 	int m_modeOccurs;		// how many times the mode occurs in the array
 	int m_mode;				// find a single mode #TODO 
 
+	float m_mean;
+
 public:
 	//----------------------------------------------------------------------------
 	// constructors
@@ -110,12 +112,31 @@ public:
 		return (modeOccurs < 2) ? false : true;
 	}
 
+	//----------------------------------------------------------------------------
+	// calculates arithmetic mean of the array
+	//----------------------------------------------------------------------------
+	float getMean() {
+		// accumulator
+		int total = 0;
+
+		// working pointer pIa preserves original pointer value
+		int* pIa = m_pElements;
+		
+		// accumulate total and calculate mean
+		for (int i = 0; i < m_numElements; i++, pIa++) {
+			total += *pIa;
+		}
+
+		m_mean = (float)total / (float)m_numElements;
+		return m_mean;
+	}
+
 	//------------------------------------------------------------------------------
 	// util
 	//------------------------------------------------------------------------------
 
 	//------------------------------------------------------------------------------
-	// fill array with random numbers between 0 and 
+	// fill array with random numbers between 0 and m_elementMax
 	//------------------------------------------------------------------------------
 	void fillRandomArray() {
 		// preserve pointer to array for delete
