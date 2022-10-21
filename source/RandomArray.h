@@ -7,10 +7,12 @@
 #include <cstdlib>		// rand()
 #include <cstring>		// memset()
 #include <ctime>		// srand(time(0))
+#include <vector>		// for data
 
 //------------------------------------------------------------------------------
 // using symbols
 //------------------------------------------------------------------------------
+using std::vector;
 
 //------------------------------------------------------------------------------
 // constants
@@ -23,7 +25,7 @@ static constexpr int NO_MODE_EXISTS = -1;
 class RandomArray {
 private:
 	int m_numElements;
-	int* m_pElements;		// array[m_numElements] is data
+	vector<int> m_vE;		// data
 
 	int m_elementMax;
 	int* m_pCounts;			// array[m_elementMax] counts element occurrences
@@ -43,7 +45,7 @@ public:
 	RandomArray(int nElements, int xMax) {
 
 		m_numElements = nElements;
-		m_pElements = new int[nElements];
+		m_vE.reserve(nElements);
 
 		m_elementMax = xMax;
 		m_pCounts = new int[xMax + 1];		// values range from 0 to xMax
@@ -63,7 +65,6 @@ public:
 	//----------------------------------------------------------------------------
 	~RandomArray() {
 		delete[] m_pCounts;
-		delete[] m_pElements;
 	}
 
 	//----------------------------------------------------------------------------
@@ -85,30 +86,27 @@ public:
 		// number of times array mode occurs
 		m_modeOccurs = 0;
 
-		// working pointer pIa preserves original pointer value
-		int* pIa = m_pElements;
-
 		// calculate mode
-		for (int i = 0; i < m_numElements; i++, pIa++) {
+		for (auto e : m_vE) {
 
-			// x is the number of movies that student #i watched
-			int x = *pIa;
+			// e is the number of movies that student #i watched
 
 			//----------------------------------------------------------------------------
-			// -bump count of students that watched x movies
+			// -bump count of students that watched e movies
 			// -find the highest count of students watching the same number of movies
-			// -the corresponding number of movies watched will be the mode
+			// -the corresponding number of movies watched is the mode
 			//----------------------------------------------------------------------------
 
-			if (++(m_pCounts[x]) > m_modeOccurs) {
-				m_modeOccurs = m_pCounts[x];
-				m_mode = x;
+			if (++m_pCounts[e] > m_modeOccurs) {
+				m_modeOccurs = m_pCounts[e];
+				m_mode = e;
 			}
 		}
 
 		// update reference parameters
 		mode = m_mode;
 		modeOccurs = m_modeOccurs;
+
 		return (modeOccurs < 2) ? false : true;
 	}
 
@@ -119,12 +117,9 @@ public:
 		// accumulator
 		int total = 0;
 
-		// working pointer pIa preserves original pointer value
-		int* pIa = m_pElements;
-		
 		// accumulate total and calculate mean
-		for (int i = 0; i < m_numElements; i++, pIa++) {
-			total += *pIa;
+		for (auto e : m_vE) {
+			total += e;
 		}
 
 		m_mean = (float)total / (float)m_numElements;
@@ -136,13 +131,11 @@ public:
 	//------------------------------------------------------------------------------
 
 	//------------------------------------------------------------------------------
-	// fill array with random numbers between 0 and m_elementMax
+	// fill array with random numbers between 0 and the max element value
 	//------------------------------------------------------------------------------
 	void fillRandomArray() {
-		// preserve pointer to array for delete
-		int* pE = m_pElements;
-		for (int i = 0; i < m_numElements; i++, pE++) {
-			*pE = rand() % m_elementMax;
+		for (int i = 0; i < m_numElements; i++) {
+			m_vE.push_back(rand() % m_elementMax);
 		}
 
 		// zero int array memory that will store elemnent occurrence counts
