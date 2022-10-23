@@ -126,6 +126,7 @@ public:
 		return m_mean;
 	}
 
+private:
 	//------------------------------------------------------------------------------
 	// util
 	//------------------------------------------------------------------------------
@@ -134,12 +135,18 @@ public:
 	// fill array with random numbers between 0 and the max element value
 	//------------------------------------------------------------------------------
 	void fillRandomArray() {
+		int max = m_elementMax + 1;
+
+		// get rid of any old vector elements
+		m_vE.clear();
+
+		// initialize vector of data values
 		for (int i = 0; i < m_numElements; i++) {
-			m_vE.push_back(rand() % m_elementMax);
+			m_vE.push_back(rand() % max);
 		}
 
-		// zero int array memory that will store elemnent occurrence counts
-		memset(m_pCounts, 0, (m_elementMax + 1) * sizeof(int));
+		// zero int array memory for counting element data occurrence counts
+		memset(m_pCounts, 0, max * sizeof(int));
 	}
 };
 #endif	// RANDOMARRAY_H
