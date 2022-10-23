@@ -139,14 +139,16 @@ public:
 	// fill array with random numbers between 0 and m_elementMax
 	//------------------------------------------------------------------------------
 	void fillRandomArray() {
+		int max = m_elementMax + 1;
+
 		// preserve pointer to array for delete
 		int* pE = m_pElements;
 		for (int i = 0; i < m_numElements; i++, pE++) {
-			*pE = rand() % m_elementMax;
+			*pE = rand() % max;
 		}
 
 		// zero int array memory that will store elemnent occurrence counts
-		memset(m_pCounts, 0, (m_elementMax + 1) * sizeof(int));
+		memset(m_pCounts, 0, (max) * sizeof(int));
 	}
 };
 #endif	// RANDOMARRAY_H
