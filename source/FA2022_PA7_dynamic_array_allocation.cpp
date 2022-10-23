@@ -5,6 +5,7 @@
 //------------------------------------------------------------------------------
 
 #include <cstdlib>
+#include <iomanip>
 #include <iostream>
 #include <string>
 
@@ -15,6 +16,9 @@
 //------------------------------------------------------------------------------
 using std::cin;
 using std::cout;
+using std::fixed;
+using std::setprecision;
+using std::showpoint;
 using std::string;
 
 //------------------------------------------------------------------------------
@@ -37,6 +41,9 @@ void displayMean(RandomArray* p);
 int main() {
 
 	displayBanner();
+
+	// format numerical output
+	cout << setprecision(3) << fixed << showpoint;
 
 	// loop until the number of students entered is 0
 	int numStudents;
@@ -81,12 +88,17 @@ int getNumStudents() {
 //------------------------------------------------------------------------------
 void displayMode(RandomArray* p) {
 	int mode, modeOccurs;
+	bool modeExists = p->getMode(mode, modeOccurs);
 
-	if (!p->getMode(mode, modeOccurs)) {
-		cout << "\nThere is no mode, no element occurred more than once.\n";
+	// display data values
+	cout << *p << '\n';
+
+	// display mode information
+	if (!modeExists) {
+		cout << "There is no mode, no element occurred more than once.\n";
 	}
 	else {
-		cout << "\nMode " << mode
+		cout << "Mode " << mode
 			<< " occurred " << modeOccurs << " times\n";
 	}
 }

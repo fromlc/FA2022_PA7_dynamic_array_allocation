@@ -12,6 +12,8 @@
 //------------------------------------------------------------------------------
 // using symbols
 //------------------------------------------------------------------------------
+using std::ostream;
+using std::string;
 using std::vector;
 
 //------------------------------------------------------------------------------
@@ -97,7 +99,7 @@ public:
 			// -the corresponding number of movies watched is the mode
 			//----------------------------------------------------------------------------
 
-			if (++m_pCounts[e] > m_modeOccurs) {
+			if (++(m_pCounts[e]) > m_modeOccurs) {
 				m_modeOccurs = m_pCounts[e];
 				m_mode = e;
 			}
@@ -147,6 +149,17 @@ private:
 
 		// zero int array memory for counting element data occurrence counts
 		memset(m_pCounts, 0, max * sizeof(int));
+	}
+
+	//----------------------------------------------------------------------------
+	// overload operator <<
+	//----------------------------------------------------------------------------
+	friend ostream& operator<<(ostream& os, const RandomArray& ra) {
+		int i = 0;
+		for (auto e : ra.m_vE) {
+			os << "Student " << ++i << " watched " << e << " movies\n";
+		}
+		return os;
 	}
 };
 #endif	// RANDOMARRAY_H
