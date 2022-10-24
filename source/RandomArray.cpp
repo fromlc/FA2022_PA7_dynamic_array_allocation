@@ -27,19 +27,24 @@ RandomArray::RandomArray(int nElements, int xMax) {
 	m_vE.reserve(nElements);
 
 	m_elementMax = xMax;
-	// values range from 0 to xMax
-	// #TODO cast to long fixes compiler warning c26451
-	//m_pCounts = new int[ xMax + 1];
-	m_pCounts = new int[(long) xMax + 1];
 
-	m_mode = -1;
-	m_modeOccurs = 0;
+	// values range from 0 to xMax
+	// allocateInts fixes compiler warning c26451
+	//m_pCounts = new int[xMax + 1];
+	int allocateInts = xMax + 1;
+	m_pCounts = new int[allocateInts];
 
 	// seed random number generator
 	srand((unsigned int)time(0));
 
 	// fill m_pElements array with random numbers between 0 and m_elementMax
 	fillRandomArray();
+
+	// init counts array and set mode member variables
+	setupModeVars();
+
+	// set default strings for data display
+	setOutputStrings("Person", "acted", "times");
 }
 
 //----------------------------------------------------------------------------
@@ -60,35 +65,12 @@ int RandomArray::getElementMax() { return m_elementMax; }
 int RandomArray::getNumElements() { return m_numElements; }
 
 //----------------------------------------------------------------------------
-// -calculates a single mode #TODO some data sets have two modes
-// -updates reference parameters to mode and how many times the mode occurred
-// -if no element occurred more than once return false, otherwise return true
+// returns mode information calculated in constructor
 //----------------------------------------------------------------------------
 bool RandomArray::getSingleMode(int& mode, int& modeOccurs) {
-	// number of times array mode occurs
-	m_modeOccurs = 0;
-	
-	// init counts array and approximate a single mode
-	for (auto e : m_vE) {
-		//----------------------------------------------------------------------------
-		// e is the number of movies that student #i watched
-		// 
-		// -bump count of students that watched e movies
-		// -find the highest count of students watching the same number of movies
-		// -the corresponding number of movies watched is the mode
-		//----------------------------------------------------------------------------
-
-		if (++(m_pCounts[e]) > m_modeOccurs) {
-			m_modeOccurs = m_pCounts[e];
-			m_mode = e;
-		}
-	}
-
-	// update reference parameters
-	mode = m_mode;
-	modeOccurs = m_modeOccurs;
-	// return true if there's one mode
-	return (modeOccurs < 2) ? false : true;
+	mode = m_modeOne;
+	modeOccurs = m_modeOneOccurs;
+	return m_singleMode;
 }
 
 //----------------------------------------------------------------------------
@@ -113,13 +95,21 @@ float RandomArray::getMean() {
 
 //----------------------------------------------------------------------------
 // use passed strings for output with overloaded operator << 
+//
+// Output format: 
+//		"Student x saw z movies" 
+//		"Person x walked z miles" 
+//
+// subject is the actor (Student, Person)
+// verb is the act (saw, walked)
+// object is the thing acted on or the units acted (movies, miles)
 //----------------------------------------------------------------------------
-void RandomArray::setOutputStrings(const string& s1,
-								   const string& s2,
-								   const string& s3) {
-	m_s1 = s1;
-	m_s2 = s2;
-	m_s3 = s3;
+void RandomArray::setOutputStrings(const string& subject,
+								   const string& verb,
+								   const string& object) {
+	m_subject = subject;
+	m_verb = verb;
+	m_object = object;
 }
 
 //------------------------------------------------------------------------------
@@ -144,10 +134,35 @@ void RandomArray::fillRandomArray() {
 	memset(m_pCounts, 0, max * sizeof(int));
 }
 
-//--------------------------------------------------------------------------------
-// inline single mode calculation
-//--------------------------------------------------------------------------------
-inline void RandomArray::modeSetup() {
+//----------------------------------------------------------------------------
+// -calculates a single mode #TODO some data sets have two modes
+// -updates reference parameters to mode and how many times the mode occurred
+// -if no element occurred more than once return false, otherwise return true
+//----------------------------------------------------------------------------
+void RandomArray::setupModeVars() {
+	m_modeTwo = 0;
+	m_modeTwoOccurs = 0;
+
+	// number of times array mode occurs
+	m_modeOneOccurs = 0;
+
+	// init counts array and approximate a single mode
+	for (auto e : m_vE) {
+		//----------------------------------------------------------------------------
+		// e is the number of movies that student #i watched
+		// 
+		// -bump count of students that watched e movies
+		// -find the highest count of students watching the same number of movies
+		// -the corresponding number of movies watched is the mode
+		//----------------------------------------------------------------------------
+		if (++(m_pCounts[e]) > m_modeOneOccurs) {
+			m_modeOneOccurs = m_pCounts[e];
+			m_modeOne = e;
+		}
+	}
+
+	// return false if mode occurs once
+	m_singleMode = !(m_modeOneOccurs < 2);
 }
 
 //--------------------------------------------------------------------------------
@@ -156,7 +171,7 @@ inline void RandomArray::modeSetup() {
 ostream& operator<<(ostream& os, const RandomArray& ra) {
 	int i = 0;
 	for (auto e : ra.m_vE) {
-		os << ra.m_s1 << ++i << ra.m_s2 << e << ra.m_s3 << '\n';
+		os << ra.m_subject << ++i << ra.m_verb << e << ra.m_object << '\n';
 	}
 	return os;
 }

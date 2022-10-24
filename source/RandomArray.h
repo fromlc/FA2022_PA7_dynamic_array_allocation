@@ -33,14 +33,22 @@ private:
 	int m_elementMax;
 	int* m_pCounts;			// array[m_elementMax] counts element occurrences
 
-	int m_modeOccurs;		// how many times the mode occurs in the array
-	int m_mode;				// find a single mode #TODO 
+	int m_modeOne;			// single mode, or first of two modes
+	int m_modeOneOccurs;	// how many times first or only mode occurs
+	bool m_singleMode;		// do vector data values have a single mode?
+
+	int m_modeTwo;
+	int m_modeTwoOccurs;
 
 	float m_mean;
+	float m_median;			// #TODO
 
-	string m_s1;			// for display with overloaded operator <<
-	string m_s2;
-	string m_s3;
+	//------------------------------------------------------------------------------
+	// 3 custom strings for display with overloaded operator <<
+	//------------------------------------------------------------------------------
+	string m_subject;		// the actor
+	string m_verb;			// the act
+	string m_object;		// the thing acted on
 
 public:
 	//----------------------------------------------------------------------------
@@ -61,9 +69,8 @@ public:
 	int getNumElements();
 
 	//----------------------------------------------------------------------------
-	// -calculates a single mode #TODO some data sets have two modes
-	// -updates reference parameters to mode and how many times the mode occurred
-	// -if no element occurred more than once return false, otherwise return true
+	// updates reference parameters with member variable values
+	// returns true if data set has a single mode, false
 	//----------------------------------------------------------------------------
 	bool getSingleMode(int& mode, int& modeOccurs);
 	//----------------------------------------------------------------------------
@@ -85,6 +92,10 @@ private:
 	// fill array with random numbers between 0 and the max element value
 	//-----------------------------------------------------------------------------
 	void fillRandomArray();
+	//----------------------------------------------------------------------------
+	// initialize all mode member variables
+	//----------------------------------------------------------------------------
+	void setupModeVars();
 	//-----------------------------------------------------------------------------
 	// overload operator <<
 	//-----------------------------------------------------------------------------

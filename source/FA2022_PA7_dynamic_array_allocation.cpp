@@ -88,17 +88,18 @@ int getNumStudents() {
 // display the array's mode
 //------------------------------------------------------------------------------
 void displayMode(RandomArray* p) {
-	int mode, modeOccurs;
-	bool modeExists = p->getSingleMode(mode, modeOccurs);
 
 	// set custom strings for data display
 	p->setOutputStrings("Student ", " watched ", " movies");
 
-	// display data values
+	// display RandomArray data values
 	cout << *p << '\n';
 
+	int mode, modeOccurs;
+	bool isSingleMode = p->getSingleMode(mode, modeOccurs);
+
 	// display mode information
-	if (!modeExists) {
+	if (!isSingleMode) {
 		cout << "There is no mode, no element occurred more than once.\n";
 	}
 	else {
