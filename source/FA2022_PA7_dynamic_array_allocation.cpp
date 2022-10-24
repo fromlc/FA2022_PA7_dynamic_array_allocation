@@ -30,7 +30,7 @@ static constexpr int MAX_MOVIES_WATCHED = 10;
 //------------------------------------------------------------------------------
 // local function prototypes
 //------------------------------------------------------------------------------
-inline void displayBanner();
+inline void appInit();
 int getNumStudents();
 void displayMode(RandomArray* p);
 void displayMean(RandomArray* p);
@@ -40,10 +40,7 @@ void displayMean(RandomArray* p);
 //------------------------------------------------------------------------------
 int main() {
 
-	displayBanner();
-
-	// format numerical output
-	cout << setprecision(3) << fixed << showpoint;
+	appInit();
 
 	// loop until the number of students entered is 0
 	int numStudents;
@@ -63,9 +60,13 @@ int main() {
 }
 
 //------------------------------------------------------------------------------
-// display app banner
+// app setup and display app banner
 //------------------------------------------------------------------------------
-inline void displayBanner() {
+inline void appInit() {
+	// format numerical output
+	cout << setprecision(3) << fixed << showpoint;
+
+	// display banner
 	cout << "\nCalculate mode for number of movies";
 	cout << " that students watched in one month\n\n";
 }
@@ -89,6 +90,9 @@ int getNumStudents() {
 void displayMode(RandomArray* p) {
 	int mode, modeOccurs;
 	bool modeExists = p->getMode(mode, modeOccurs);
+
+	// set custom strings for data display
+	p->setOutputStrings("Student ", " watched ", " movies");
 
 	// display data values
 	cout << *p << '\n';

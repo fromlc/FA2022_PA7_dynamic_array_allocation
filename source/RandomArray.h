@@ -24,6 +24,9 @@ static constexpr int MAX_ELEMENTS = 100;
 static constexpr int MAX_ELEMENT_VALUE = 10;
 static constexpr int NO_MODE_EXISTS = -1;
 
+//------------------------------------------------------------------------------
+// RandomArray
+//------------------------------------------------------------------------------
 class RandomArray {
 private:
 	int m_numElements;
@@ -36,6 +39,10 @@ private:
 	int m_mode;				// find a single mode #TODO 
 
 	float m_mean;
+
+	string m_s1;			// for display with overloaded operator <<
+	string m_s2;
+	string m_s3;
 
 public:
 	//----------------------------------------------------------------------------
@@ -128,6 +135,21 @@ public:
 		return m_mean;
 	}
 
+	//----------------------------------------------------------------------------
+	// setters
+	//----------------------------------------------------------------------------
+
+	//----------------------------------------------------------------------------
+	// use passed strings for output with overloaded operator << 
+	//----------------------------------------------------------------------------
+	void setOutputStrings(const string&& s1,
+						  const string&& s2, 
+						  const string&& s3) {
+		m_s1 = s1;
+		m_s2 = s2;
+		m_s3 = s3;
+	}
+
 private:
 	//------------------------------------------------------------------------------
 	// util
@@ -157,7 +179,7 @@ private:
 	friend ostream& operator<<(ostream& os, const RandomArray& ra) {
 		int i = 0;
 		for (auto e : ra.m_vE) {
-			os << "Student " << ++i << " watched " << e << " movies\n";
+			os << ra.m_s1 << ++i << ra.m_s2 << e << ra.m_s3 << '\n';
 		}
 		return os;
 	}
