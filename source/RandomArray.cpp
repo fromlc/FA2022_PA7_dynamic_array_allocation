@@ -34,9 +34,6 @@ RandomArray::RandomArray(int nElements, int xMax) {
 	int allocateInts = xMax + 1;
 	m_pCounts = new int[allocateInts];
 
-	// seed random number generator
-	srand((unsigned int)time(0));
-
 	// fill m_pElements array with random numbers between 0 and m_elementMax
 	fillRandomArray();
 
@@ -120,6 +117,9 @@ void RandomArray::setOutputStrings(const string& subject,
 // fill array with random numbers between 0 and the max element value
 //------------------------------------------------------------------------------
 void RandomArray::fillRandomArray() {
+	// seed random number generator
+	srand((unsigned int)time(0));
+
 	int max = m_elementMax + 1;
 
 	// get rid of any old vector elements
