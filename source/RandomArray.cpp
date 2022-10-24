@@ -34,7 +34,7 @@ RandomArray::RandomArray(int nElements, int xMax) {
 	int allocateInts = xMax + 1;
 	m_pCounts = new int[allocateInts];
 
-	// fill m_pElements array with random numbers between 0 and m_elementMax
+	// store random data values 0 to m_elementMax
 	fillRandomArray();
 
 	// init counts array and set mode member variables
