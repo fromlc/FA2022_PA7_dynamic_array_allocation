@@ -27,7 +27,10 @@ RandomArray::RandomArray(int nElements, int xMax) {
 	m_vE.reserve(nElements);
 
 	m_elementMax = xMax;
-	m_pCounts = new int[xMax + 1];		// values range from 0 to xMax
+	// values range from 0 to xMax
+	// #TODO cast to long fixes compiler warning c26451
+	//m_pCounts = new int[ xMax + 1];
+	m_pCounts = new int[(long) xMax + 1];
 
 	m_mode = -1;
 	m_modeOccurs = 0;
@@ -61,11 +64,11 @@ int RandomArray::getNumElements() { return m_numElements; }
 // -updates reference parameters to mode and how many times the mode occurred
 // -if no element occurred more than once return false, otherwise return true
 //----------------------------------------------------------------------------
-bool RandomArray::getMode(int& mode, int& modeOccurs) {
+bool RandomArray::getSingleMode(int& mode, int& modeOccurs) {
 	// number of times array mode occurs
 	m_modeOccurs = 0;
-
-	// calculate mode
+	
+	// init counts array and approximate a single mode
 	for (auto e : m_vE) {
 		//----------------------------------------------------------------------------
 		// e is the number of movies that student #i watched
@@ -84,7 +87,7 @@ bool RandomArray::getMode(int& mode, int& modeOccurs) {
 	// update reference parameters
 	mode = m_mode;
 	modeOccurs = m_modeOccurs;
-
+	// return true if there's one mode
 	return (modeOccurs < 2) ? false : true;
 }
 
@@ -141,9 +144,15 @@ void RandomArray::fillRandomArray() {
 	memset(m_pCounts, 0, max * sizeof(int));
 }
 
-//----------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
+// inline single mode calculation
+//--------------------------------------------------------------------------------
+inline void RandomArray::modeSetup() {
+}
+
+//--------------------------------------------------------------------------------
 // overload operator <<
-//----------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 ostream& operator<<(ostream& os, const RandomArray& ra) {
 	int i = 0;
 	for (auto e : ra.m_vE) {

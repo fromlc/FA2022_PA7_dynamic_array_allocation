@@ -18,6 +18,9 @@
     <ClCompile Include="source\FA2022_PA7_dynamic_array_allocation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\RandomArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\RandomArray.h">

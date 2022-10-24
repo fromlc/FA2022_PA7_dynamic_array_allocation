@@ -65,7 +65,7 @@ public:
 	// -updates reference parameters to mode and how many times the mode occurred
 	// -if no element occurred more than once return false, otherwise return true
 	//----------------------------------------------------------------------------
-	bool getMode(int& mode, int& modeOccurs);
+	bool getSingleMode(int& mode, int& modeOccurs);
 	//----------------------------------------------------------------------------
 	// calculates arithmetic mean of the array
 	//----------------------------------------------------------------------------
@@ -81,13 +81,13 @@ public:
 	void setOutputStrings(const string& s1, const string& s2, const string& s3);
 
 private:
-	//------------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	// fill array with random numbers between 0 and the max element value
-	//------------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	void fillRandomArray();
-	//----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	// overload operator <<
-	//----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	friend ostream& operator<<(ostream& os, const RandomArray& ra);
 };
 #endif	// RANDOMARRAY_H
