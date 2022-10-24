@@ -4,7 +4,7 @@
 #include <cstdlib>		// rand()
 #include <cstring>		// memset()
 #include <ctime>		// srand(time(0))
-#include <vector>		// for data
+#include <vector>		// data store
 
 #include "RandomArray.h"
 
@@ -18,7 +18,7 @@ using std::vector;
 //----------------------------------------------------------------------------
 // constructors
 //----------------------------------------------------------------------------
-RandomArray::RandomArray() : RandomArray(DEFAULT_ELEMENTS, MAX_ELEMENT_VALUE) {}
+RandomArray::RandomArray() : RandomArray(NUM_ELEMENTS, MAX_ELEMENT_VALUE) {}
 
 //----------------------------------------------------------------------------
 RandomArray::RandomArray(int nElements, int xMax) {
@@ -135,9 +135,7 @@ void RandomArray::fillRandomArray() {
 }
 
 //----------------------------------------------------------------------------
-// -calculates a single mode #TODO some data sets have two modes
-// -updates reference parameters to mode and how many times the mode occurred
-// -if no element occurred more than once return false, otherwise return true
+// initialize mode member vars and approximate a single mode
 //----------------------------------------------------------------------------
 void RandomArray::setupModeVars() {
 	m_modeTwo = 0;

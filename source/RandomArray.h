@@ -17,10 +17,9 @@ using std::vector;
 //------------------------------------------------------------------------------
 // constants
 //------------------------------------------------------------------------------
-constexpr int DEFAULT_ELEMENTS = 100;
-constexpr int MAX_ELEMENTS = 100;
+constexpr int NUM_ELEMENTS		= 100;
 constexpr int MAX_ELEMENT_VALUE = 10;
-constexpr int NO_MODE_EXISTS = -1;
+constexpr int NO_MODE_EXISTS	= -1;
 
 //------------------------------------------------------------------------------
 // RandomArray
