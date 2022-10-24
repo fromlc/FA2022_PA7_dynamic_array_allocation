@@ -89,7 +89,7 @@ int getNumStudents() {
 //------------------------------------------------------------------------------
 void displayMode(RandomArray* p) {
 	int mode, modeOccurs;
-	bool modeExists = p->getMode(mode, modeOccurs);
+	bool modeExists = p->getSingleMode(mode, modeOccurs);
 
 	// set custom strings for data display
 	p->setOutputStrings("Student ", " watched ", " movies");
