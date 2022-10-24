@@ -64,8 +64,8 @@ public:
 	//----------------------------------------------------------------------------
 	// getters
 	//----------------------------------------------------------------------------
-	int getElementMax();
-	int getNumElements();
+	int getMaxDataValue();
+	int getDataItemCount();
 
 	//----------------------------------------------------------------------------
 	// updates reference parameters with member variable values

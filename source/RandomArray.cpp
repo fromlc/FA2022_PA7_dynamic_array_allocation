@@ -59,10 +59,10 @@ RandomArray::~RandomArray() {
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-int RandomArray::getElementMax() { return m_elementMax; }
+int RandomArray::getMaxDataValue() { return m_elementMax; }
 
 //----------------------------------------------------------------------------
-int RandomArray::getNumElements() { return m_numElements; }
+int RandomArray::getDataItemCount() { return m_numElements; }
 
 //----------------------------------------------------------------------------
 // returns mode information calculated in constructor
