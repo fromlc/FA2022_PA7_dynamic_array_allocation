@@ -112,10 +112,10 @@ float RandomArray::getMedian() {
 	
 	// even number of data items: return average of 2 middle items
 	int mI1 = medianIndex - 1;
-	int mI2 = medianIndex + 1;
-	float median = (float) m_vSortedData.at(mI1) + m_vSortedData.at(mI2);
+	int mI2 = medianIndex;
+	int median = m_vSortedData.at(mI1) + m_vSortedData.at(mI2);
 	
-	return median / 2;
+	return median / 2.0;
 }
 
 //----------------------------------------------------------------------------
