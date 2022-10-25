@@ -33,14 +33,9 @@ private:
 	int* m_pCounts;			// array[m_elementMax + 1] counts data occurrences
 
 	int m_modeOne;			// single mode, or first of two modes
-	int m_modeOneOccurs;	// how many times first or only mode occurs
-	bool m_singleMode;		// do vector data values have a single mode?
-
-	int m_modeTwo;
-	int m_modeTwoOccurs;
-	bool m_twoModes;
-	
-	bool m_noMode;
+	int m_modeTwo;			// second mode
+	int m_modeOccurs;		// how many times first or only mode occurs
+	int m_modeCount;		// how many modes for data set: 0, 1, or 2
 
 	float m_mean;
 	float m_median;			// #TODO

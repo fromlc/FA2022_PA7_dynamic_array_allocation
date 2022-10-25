@@ -107,7 +107,7 @@ void displayMode(RandomArray* p) {
 		cout << "There are two modes.\n";
 		cout << "First mode " << modeOne
 		<< " occurred " << modeOneOccurs << " times\n";
-		cout << "Second mode 2 " << modeTwo
+		cout << "Second mode " << modeTwo
 		<< " occurred " << modeTwoOccurs << " times\n";
 	}
 	else {
