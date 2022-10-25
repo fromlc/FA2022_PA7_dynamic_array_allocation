@@ -38,8 +38,13 @@ private:
 	int m_modeOccurs;		// how many times first or only mode occurs
 	int m_modeCount;		// how many modes for data set: 0, 1, or 2
 
-	float m_mean;
-	float m_median;			// #TODO
+	float m_mean;			// arithmetic mean
+	
+	//------------------------------------------------------------------------------
+	// middle value when odd number of elements, else average of two middle values
+	//------------------------------------------------------------------------------
+	int m_median1;
+	int m_median2;
 
 	//------------------------------------------------------------------------------
 	// 3 custom strings for display with overloaded operator <<
@@ -82,7 +87,12 @@ public:
 	//----------------------------------------------------------------------------
 	// calculates median of the array
 	//----------------------------------------------------------------------------
-	float getMedian();
+	void getMedianData(int& median1, int& median2);
+	//----------------------------------------------------------------------------
+	// get a vector copy of the random or sorted data values
+	//----------------------------------------------------------------------------
+	void getRandomDataVector(vector<int>& vCopy);
+	void getSortedDataVector(vector<int>& vCopy);
 
 	//----------------------------------------------------------------------------
 	// setters
@@ -103,6 +113,7 @@ private:
 	//----------------------------------------------------------------------------
 	void setupModeVars();
 	void setupSecondMode();
+	void setupMedian();
 	//-----------------------------------------------------------------------------
 	// overload operator <<
 	//-----------------------------------------------------------------------------

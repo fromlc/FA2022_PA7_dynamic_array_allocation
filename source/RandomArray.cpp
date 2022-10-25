@@ -1,10 +1,11 @@
 //------------------------------------------------------------------------------
 // RandomArray.cpp : class definition
 //------------------------------------------------------------------------------
-#include <algorithm>	// sort()
+#include <algorithm>	// sort(), copy()
 #include <cstdlib>		// rand()
 #include <cstring>		// memset()
 #include <ctime>		// srand(time(0))
+#include <iterator>		// back_inserter()
 #include <vector>		// data store
 
 #include "RandomArray.h"
@@ -40,7 +41,10 @@ RandomArray::RandomArray(int nElements, int xMax) {
 	fillRandomArray();
 
 	// init counts array and set mode member variables
-	setupModeVars();
+	setupModeVars(); 
+
+	// copy data to another vector, sort copy, calculate median
+	setupMedian();
 
 	// set default strings for data display
 	setOutputStrings("Person", "acted", "times");
@@ -96,25 +100,30 @@ float RandomArray::getMean() {
 }
 
 //----------------------------------------------------------------------------
-// calculates median of the array
+// returns median of the array
 //----------------------------------------------------------------------------
-float RandomArray::getMedian() {
-	copy(m_vData.begin(), m_vData.end(), back_inserter(m_vSortedData));
-	sort(m_vSortedData.begin(), m_vSortedData.end());
+void RandomArray::getMedianData(int& median1, int& median2) {
+	median1 = m_median1;
+	median2 = m_median2;
+}
 
-	int medianIndex = m_numElements / 2;
+//----------------------------------------------------------------------------
+// get a vector copy of the random data values
+// #TODO make inline
+//----------------------------------------------------------------------------
+void RandomArray::getRandomDataVector(vector<int>& vCopy) {
 
-	// odd number of data items: return middle item
-	if (m_numElements % 2 == 1) {
-		return (float) m_vSortedData.at(medianIndex);
-	}
-	
-	// even number of data items: return average of 2 middle items
-	int mI1 = medianIndex - 1;
-	int mI2 = medianIndex;
-	int median = m_vSortedData.at(mI1) + m_vSortedData.at(mI2);
-	
-	return median / 2.0;
+	// use iterators to copy random data vector
+	copy(m_vData.begin(), m_vData.end(), back_inserter(vCopy));
+}
+
+//----------------------------------------------------------------------------
+// get a vector copy of sorted data values
+//----------------------------------------------------------------------------
+void RandomArray::getSortedDataVector(vector<int>& vCopy) {
+
+	// use iterators to copy random data vector
+	copy(m_vSortedData.begin(), m_vSortedData.end(), back_inserter(vCopy));
 }
 
 //----------------------------------------------------------------------------
@@ -179,9 +188,9 @@ void RandomArray::setupModeVars() {
 		//----------------------------------------------------------------------------
 		// dataItem is the number of movies that student #i watched
 		// 
-		// -bump count of students that watched e movies
-		// -find the highest count of students watching the same number of movies
-		// -the corresponding number of movies watched is the mode
+		// -bump count of students that watched that many
+		// -find max count of students watching the same number of movies
+		// -that number of movies watched is the mode
 		//----------------------------------------------------------------------------
 		if (++(m_pCounts[dataItem]) > m_modeOccurs) {
 			m_modeOccurs = m_pCounts[dataItem];
@@ -231,13 +240,44 @@ void RandomArray::setupSecondMode() {
 	}
 }
 
-//--------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+// calculates median of the array
+// returns:
+//		middle item when odd number of data items, 
+//		average of 2 middle items otherwise
+//----------------------------------------------------------------------------
+void RandomArray::setupMedian() {
+	// use iterators to copy data vector
+	copy(m_vData.begin(), m_vData.end(), back_inserter(m_vSortedData));
+	// sort the copy
+	sort(m_vSortedData.begin(), m_vSortedData.end());
+
+	// assume odd number of data items
+	int medianIndex = m_numElements / 2;
+
+	// odd number of data items: return middle item
+	if (m_numElements % 2 == 1) {
+		m_median1 = m_median2 = m_vSortedData.at(medianIndex);
+		return;
+	}
+
+	// even number of data items: return average of 2 middle items
+	int mI1 = medianIndex - 1;
+	int mI2 = medianIndex;
+
+	m_median1 = m_vSortedData.at(mI1);
+	m_median2 = m_vSortedData.at(mI2);
+}
+
+//------------------------------------------------------------------------------
 // overload operator <<
-//--------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 ostream& operator<<(ostream& os, const RandomArray& ra) {
 	int i = 0;
-	for (const auto e : ra.m_vData) {
-		os << ra.m_subject << ++i << ra.m_verb << e << ra.m_object << '\n';
+	for (const auto dataItem : ra.m_vData) {
+		os << ra.m_subject << ++i
+			<< ra.m_verb << dataItem
+			<< ra.m_object << '\n';
 	}
 	return os;
 }

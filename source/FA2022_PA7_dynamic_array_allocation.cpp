@@ -66,7 +66,7 @@ int main() {
 //------------------------------------------------------------------------------
 inline void appInit() {
 	// format numerical output
-	cout << setprecision(3) << fixed << showpoint;
+	cout << setprecision(1) << fixed << showpoint;
 
 	// display banner
 	cout << "\nCalculate mode for number of movies";
@@ -127,7 +127,11 @@ void displayMean(RandomArray* p) {
 // display the array's median
 //------------------------------------------------------------------------------
 void displayMedian(RandomArray* p) {
+	int median1, median2;
+	p->getMedianData(median1, median2);
 
-	cout << "\nMedian: " << p->getMedian() << "\n";
+	cout << "\nAveraged median: " << median1 + median2 / 2.0 << "\n";
+	cout << "\nMedian 1: " << median1;
+	cout << "\nMedian 2: " << median2 << "\n";
 }
 
