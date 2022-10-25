@@ -97,14 +97,15 @@ void displayMode(RandomArray* p) {
 
 	// use as reference parameters
 	int modeOne, modeTwo, modeOccurs;
+	int modeCount = p->getModeValues(modeOne, modeTwo, modeOccurs);
 
 	// display mode information
-	if (p->getSingleMode(modeOne, modeOccurs)) {
-		cout << "Mode " << modeOne
+	if (modeCount == 1) {
+		cout << "One mode: " << modeOne
 			<< " occurred " << modeOccurs << " times\n";
 	}
-	else if (p->getSecondMode(modeTwo)) {
-		cout << "There are two modes: " << modeOne << " and " 
+	else if (modeCount == 2) {
+		cout << "Two modes: " << modeOne << " and " 
 			<< modeTwo << " both occurred " << modeOccurs << " times\n";
 	}
 	else {

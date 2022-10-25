@@ -32,8 +32,8 @@ private:
 	int m_elementMax;
 	int* m_pCounts;			// array[m_elementMax + 1] counts data occurrences
 
-	int m_modeOne;			// single mode, or first of two modes
-	int m_modeTwo;			// second mode
+	int m_mode1;			// single mode, or first of two modes
+	int m_mode2;			// second mode
 	int m_modeOccurs;		// how many times first or only mode occurs
 	int m_modeCount;		// how many modes for data set: 0, 1, or 2
 
@@ -66,20 +66,14 @@ public:
 	int getDataItemCount() const;
 
 	//----------------------------------------------------------------------------
-	// updates reference parameters with member variable values
-	// returns true if data set has a single mode, false otherwise
-	//----------------------------------------------------------------------------
-	bool getSingleMode(int& modeOne, int& modeOneOccurs) const;
-	//----------------------------------------------------------------------------
-	// calculates second mode
-	// updates reference parameters with member variable values
-	// returns true if data set has a second mode, false otherwise
-	//----------------------------------------------------------------------------
-	bool getSecondMode(int& modeTwo) const;
-	//----------------------------------------------------------------------------
 	// returns number of modes for data set
 	//----------------------------------------------------------------------------
 	int getModeCount() const;
+	//----------------------------------------------------------------------------
+	// updates reference parameters with member variable values
+	// returns number of modes for data set: 0, 1, or 2
+	//----------------------------------------------------------------------------
+	int getModeValues(int& mode1, int& mode2, int& occurs) const;
 	//----------------------------------------------------------------------------
 	// calculates arithmetic mean of the array
 	//----------------------------------------------------------------------------

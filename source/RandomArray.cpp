@@ -62,29 +62,21 @@ int RandomArray::getMaxDataValue() const { return m_elementMax; }
 int RandomArray::getDataItemCount() const { return m_numElements; }
 
 //----------------------------------------------------------------------------
-// updates reference params with mode info calculated in setupModeVars()
-// returns true if data set has a single mode, false otherwise
-//----------------------------------------------------------------------------
-bool RandomArray::getSingleMode(int& modeOne, int& modeOneOccurs) const {
-	modeOne = m_modeOne;
-	modeOneOccurs = m_modeOccurs;
-	return m_modeCount == 1;
-}
-
-//----------------------------------------------------------------------------
-// updates reference params with mode info calculated in setupSecondMode()
-// returns true if data set has two modes, false otherwise
-//----------------------------------------------------------------------------
-bool RandomArray::getSecondMode(int& modeTwo) const {
-	modeTwo = m_modeTwo;
-	return m_modeCount == 2;
-}
-
-//----------------------------------------------------------------------------
 // updates reference params with mode info calculated in setupSecondMode()
 // returns true if data set has two modes, false otherwise
 //----------------------------------------------------------------------------
 int RandomArray::getModeCount() const { return m_modeCount; }
+
+//----------------------------------------------------------------------------
+// updates reference parameters with member variable values
+// returns number of modes for data set: 0, 1, or 2
+//----------------------------------------------------------------------------
+int RandomArray::getModeValues(int& mode1, int& mode2, int& occurs) const {
+	mode1 = m_mode1;
+	mode2 = m_mode2;
+	occurs = m_modeOccurs;
+	return m_modeCount;
+}
 
 //----------------------------------------------------------------------------
 // calculates arithmetic mean of the array
@@ -154,7 +146,7 @@ void RandomArray::fillRandomArray() {
 // initialize mode member vars and approximate a single mode
 //----------------------------------------------------------------------------
 void RandomArray::setupModeVars() {
-	m_modeTwo = 0;
+	m_mode2 = 0;
 
 	// number of times array mode occurs
 	m_modeOccurs = 0;
@@ -170,7 +162,7 @@ void RandomArray::setupModeVars() {
 		//----------------------------------------------------------------------------
 		if (++(m_pCounts[e]) > m_modeOccurs) {
 			m_modeOccurs = m_pCounts[e];
-			m_modeOne = e;
+			m_mode1 = e;
 		}
 	}
 
@@ -188,8 +180,8 @@ void RandomArray::setupSecondMode() {
 	// a mode must occur at least twice
 	if (m_modeOccurs < 2) {
 		m_modeCount = 0;
-		m_modeOne = 0;
-		m_modeTwo = 0;
+		m_mode1 = 0;
+		m_mode2 = 0;
 		return;
 	}
 
@@ -201,19 +193,17 @@ void RandomArray::setupSecondMode() {
 
 		if (m_pCounts[i] == m_modeOccurs) {
 			// ignore first mode already found
-			if (i == m_modeOne) {
+			if (i == m_mode1) {
 				continue;
 			}
 			// already found second mode, third candidate means zero modes
 			if (m_modeCount == 2) {
 				m_modeCount = 0;
-				m_modeTwo = 0;
-				m_modeOccurs = 0;
 				return;
 			}
 			// candidate second mode, keep looking
 			m_modeCount = 2;
-			m_modeTwo = i;
+			m_mode2 = i;
 		}
 	}
 }
