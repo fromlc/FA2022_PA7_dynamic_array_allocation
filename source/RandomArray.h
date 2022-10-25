@@ -30,7 +30,7 @@ private:
 	vector<int> m_vE;		// data
 
 	int m_elementMax;
-	int* m_pCounts;			// array[m_elementMax] counts element occurrences
+	int* m_pCounts;			// array[m_elementMax + 1] counts data occurrences
 
 	int m_modeOne;			// single mode, or first of two modes
 	int m_modeOneOccurs;	// how many times first or only mode occurs
@@ -38,6 +38,9 @@ private:
 
 	int m_modeTwo;
 	int m_modeTwoOccurs;
+	bool m_twoModes;
+	
+	bool m_noMode;
 
 	float m_mean;
 	float m_median;			// #TODO
@@ -69,9 +72,15 @@ public:
 
 	//----------------------------------------------------------------------------
 	// updates reference parameters with member variable values
-	// returns true if data set has a single mode, false
+	// returns true if data set has a single mode, false otherwise
 	//----------------------------------------------------------------------------
-	bool getSingleMode(int& mode, int& modeOccurs);
+	bool getSingleMode(int& modeOne, int& modeOneOccurs);
+	//----------------------------------------------------------------------------
+	// calculates second mode
+	// updates reference parameters with member variable values
+	// returns true if data set has a second mode, false otherwise
+	//----------------------------------------------------------------------------
+	bool getSecondMode(int& modeTwo, int& modeTwoOccurs);
 	//----------------------------------------------------------------------------
 	// calculates arithmetic mean of the array
 	//----------------------------------------------------------------------------
@@ -92,9 +101,10 @@ private:
 	//-----------------------------------------------------------------------------
 	void fillRandomArray();
 	//----------------------------------------------------------------------------
-	// initialize all mode member variables
+	// initialize mode member variables, calculate mode(s)
 	//----------------------------------------------------------------------------
 	void setupModeVars();
+	void setupSecondMode();
 	//-----------------------------------------------------------------------------
 	// overload operator <<
 	//-----------------------------------------------------------------------------
