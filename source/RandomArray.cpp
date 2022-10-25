@@ -88,7 +88,7 @@ float RandomArray::getMean() {
 	int total = 0;
 
 	// accumulate total and calculate mean
-	for (auto dataItem : m_vData) {
+	for (const auto dataItem : m_vData) {
 		total += dataItem;
 	}
 
@@ -176,7 +176,7 @@ void RandomArray::setupModeVars() {
 	m_modeOccurs = 0;
 
 	// init counts array and assumes a single mode
-	for (auto dataItem : m_vData) {
+	for (const auto dataItem : m_vData) {
 		//----------------------------------------------------------------------------
 		// dataItem is the number of movies that student #i watched
 		// 
@@ -237,7 +237,7 @@ void RandomArray::setupSecondMode() {
 //--------------------------------------------------------------------------------
 ostream& operator<<(ostream& os, const RandomArray& ra) {
 	int i = 0;
-	for (auto e : ra.m_vData) {
+	for (const auto e : ra.m_vData) {
 		os << ra.m_subject << ++i << ra.m_verb << e << ra.m_object << '\n';
 	}
 	return os;
