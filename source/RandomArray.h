@@ -27,7 +27,8 @@ constexpr int NO_MODE_EXISTS	= -1;
 class RandomArray {
 private:
 	int m_numElements;
-	vector<int> m_vE;		// data
+	vector<int> m_vData;
+	vector<int> m_vSortedData;
 
 	int m_elementMax;
 	int* m_pCounts;			// array[m_elementMax + 1] counts data occurrences
@@ -81,7 +82,7 @@ public:
 	//----------------------------------------------------------------------------
 	// calculates median of the array
 	//----------------------------------------------------------------------------
-	int getMedian();
+	float getMedian();
 
 	//----------------------------------------------------------------------------
 	// setters

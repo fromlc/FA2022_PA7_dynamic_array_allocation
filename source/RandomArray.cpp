@@ -1,6 +1,7 @@
 //------------------------------------------------------------------------------
 // RandomArray.cpp : class definition
 //------------------------------------------------------------------------------
+#include <algorithm>	// sort()
 #include <cstdlib>		// rand()
 #include <cstring>		// memset()
 #include <ctime>		// srand(time(0))
@@ -24,7 +25,8 @@ RandomArray::RandomArray() : RandomArray(NUM_ELEMENTS, MAX_ELEMENT_VALUE) {}
 RandomArray::RandomArray(int nElements, int xMax) {
 
 	m_numElements = nElements;
-	m_vE.reserve(nElements);
+	m_vData.reserve(nElements);
+	m_vSortedData.reserve(nElements);
 
 	m_elementMax = xMax;
 
@@ -86,8 +88,8 @@ float RandomArray::getMean() {
 	int total = 0;
 
 	// accumulate total and calculate mean
-	for (auto e : m_vE) {
-		total += e;
+	for (auto dataItem : m_vData) {
+		total += dataItem;
 	}
 
 	m_mean = (float)total / (float)m_numElements;
@@ -97,8 +99,23 @@ float RandomArray::getMean() {
 //----------------------------------------------------------------------------
 // calculates median of the array
 //----------------------------------------------------------------------------
-int RandomArray::getMedian() {
-	return -1;		// #TODO
+float RandomArray::getMedian() {
+	copy(m_vData.begin(), m_vData.end(), back_inserter(m_vSortedData));
+	sort(m_vSortedData.begin(), m_vSortedData.end());
+
+	int medianIndex;
+
+	// odd number of data items
+	if (m_numElements % 2 == 1) {
+		medianIndex = m_numElements / 2;
+		return (float) m_vSortedData.at(medianIndex);
+	}
+	
+	// even number of data items
+	float median = (float) m_vSortedData.at((m_numElements / 2) - 1);
+	median += (float) m_vSortedData.at((m_numElements / 2) + 1);
+	
+	return median / 2;
 }
 
 //----------------------------------------------------------------------------
@@ -138,11 +155,11 @@ void RandomArray::fillRandomArray() {
 	int max = m_elementMax + 1;
 
 	// get rid of any old vector elements
-	m_vE.clear();
+	m_vData.clear();
 
 	// initialize vector of data values
 	for (int i = 0; i < m_numElements; i++) {
-		m_vE.push_back(rand() % max);
+		m_vData.push_back(rand() % max);
 	}
 
 	// zero int array memory for counting element data occurrence counts
@@ -159,17 +176,17 @@ void RandomArray::setupModeVars() {
 	m_modeOccurs = 0;
 
 	// init counts array and assumes a single mode
-	for (auto e : m_vE) {
+	for (auto dataItem : m_vData) {
 		//----------------------------------------------------------------------------
-		// e is the number of movies that student #i watched
+		// dataItem is the number of movies that student #i watched
 		// 
 		// -bump count of students that watched e movies
 		// -find the highest count of students watching the same number of movies
 		// -the corresponding number of movies watched is the mode
 		//----------------------------------------------------------------------------
-		if (++(m_pCounts[e]) > m_modeOccurs) {
-			m_modeOccurs = m_pCounts[e];
-			m_mode1 = e;
+		if (++(m_pCounts[dataItem]) > m_modeOccurs) {
+			m_modeOccurs = m_pCounts[dataItem];
+			m_mode1 = dataItem;
 		}
 	}
 
@@ -220,7 +237,7 @@ void RandomArray::setupSecondMode() {
 //--------------------------------------------------------------------------------
 ostream& operator<<(ostream& os, const RandomArray& ra) {
 	int i = 0;
-	for (auto e : ra.m_vE) {
+	for (auto e : ra.m_vData) {
 		os << ra.m_subject << ++i << ra.m_verb << e << ra.m_object << '\n';
 	}
 	return os;
