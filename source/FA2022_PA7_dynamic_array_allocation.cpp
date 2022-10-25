@@ -98,17 +98,17 @@ void displayMode(RandomArray* p) {
 	cout << *p << '\n';
 
 	// use as reference parameters
-	int modeOne, modeTwo, modeOccurs;
-	int modeCount = p->getModeValues(modeOne, modeTwo, modeOccurs);
+	int mode1, mode2, modeOccurs;
+	int modeCount = p->getModeData(mode1, mode2, modeOccurs);
 
 	// display mode information
 	if (modeCount == 1) {
-		cout << "One mode: " << modeOne
+		cout << "One mode: " << mode1
 			<< " occurred " << modeOccurs << " times\n";
 	}
 	else if (modeCount == 2) {
-		cout << "Two modes: " << modeOne << " and " 
-			<< modeTwo << " both occurred " << modeOccurs << " times\n";
+		cout << "Two modes: " << mode1 << " and " 
+			<< mode2 << " both occurred " << modeOccurs << " times\n";
 	}
 	else {
 		cout << "There is no mode for this data set.\n";
@@ -130,8 +130,13 @@ void displayMedian(RandomArray* p) {
 	int median1, median2;
 	p->getMedianData(median1, median2);
 
-	cout << "\nAveraged median: " << (median1 + median2) / 2.0;
-	cout << "\nMedian 1: " << median1;
-	cout << "\nMedian 2: " << median2 << "\n";
-}
+	if (median1 == median2) {
+		cout << "\nMedian: " << median1;
+	}
+	else {
+		cout << "\nMedian 1: " << median1;
+		cout << "\nMedian 2: " << median2;
+		cout << "\nAveraged median: " << (median1 + median2) / 2.0 << '\n';
+	}
 
+}

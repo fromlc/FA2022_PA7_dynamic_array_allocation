@@ -79,7 +79,7 @@ public:
 	// updates reference parameters with member variable values
 	// returns number of modes for data set: 0, 1, or 2
 	//----------------------------------------------------------------------------
-	int getModeValues(int& mode1, int& mode2, int& occurs) const;
+	int getModeData(int& mode1, int& mode2, int& occurs) const;
 	//----------------------------------------------------------------------------
 	// calculates arithmetic mean of the array
 	//----------------------------------------------------------------------------
