@@ -95,6 +95,7 @@ void displayMode(RandomArray* p) {
 	// display RandomArray data values
 	cout << *p << '\n';
 
+	// use as reference parameters
 	int modeOne, modeTwo, modeOccurs;
 
 	// display mode information
