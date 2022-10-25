@@ -64,14 +64,12 @@ int RandomArray::getMaxDataValue() const { return m_elementMax; }
 int RandomArray::getDataItemCount() const { return m_numElements; }
 
 //----------------------------------------------------------------------------
-// updates reference params with mode info calculated in setupSecondMode()
-// returns true if data set has two modes, false otherwise
+// returns number of modes for data set: 0, 1, or 2
 //----------------------------------------------------------------------------
 int RandomArray::getModeCount() const { return m_modeCount; }
 
 //----------------------------------------------------------------------------
 // updates reference parameters with member variable values
-// returns number of modes for data set: 0, 1, or 2
 //----------------------------------------------------------------------------
 int RandomArray::getModeValues(int& mode1, int& mode2, int& occurs) const {
 	mode1 = m_mode1;
