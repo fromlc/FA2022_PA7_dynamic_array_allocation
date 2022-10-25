@@ -34,6 +34,7 @@ inline void appInit();
 int getNumStudents();
 void displayMode(RandomArray* p);
 void displayMean(RandomArray* p);
+void displayMedian(RandomArray* p);
 
 //------------------------------------------------------------------------------
 // entry point
@@ -49,6 +50,7 @@ int main() {
 
 		displayMode(pRa);
 		displayMean(pRa);
+		displayMedian(pRa);
 
 		// release dynamically allocated array memory
 		delete pRa;
@@ -119,5 +121,13 @@ void displayMode(RandomArray* p) {
 void displayMean(RandomArray* p) {
 
 	cout << "\nMean: " << p->getMean() << "\n";
+}
+
+//------------------------------------------------------------------------------
+// display the array's median
+//------------------------------------------------------------------------------
+void displayMedian(RandomArray* p) {
+
+	cout << "\nMedian: " << p->getMedian() << "\n";
 }
 
