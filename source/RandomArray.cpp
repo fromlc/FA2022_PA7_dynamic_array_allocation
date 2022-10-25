@@ -103,17 +103,17 @@ float RandomArray::getMedian() {
 	copy(m_vData.begin(), m_vData.end(), back_inserter(m_vSortedData));
 	sort(m_vSortedData.begin(), m_vSortedData.end());
 
-	int medianIndex;
+	int medianIndex = m_numElements / 2;
 
-	// odd number of data items
+	// odd number of data items: return middle item
 	if (m_numElements % 2 == 1) {
-		medianIndex = m_numElements / 2;
 		return (float) m_vSortedData.at(medianIndex);
 	}
 	
-	// even number of data items
-	float median = (float) m_vSortedData.at((m_numElements / 2) - 1);
-	median += (float) m_vSortedData.at((m_numElements / 2) + 1);
+	// even number of data items: return average of 2 middle items
+	int mI1 = medianIndex - 1;
+	int mI2 = medianIndex + 1;
+	float median = (float) m_vSortedData.at(mI1) + m_vSortedData.at(mI2);
 	
 	return median / 2;
 }
