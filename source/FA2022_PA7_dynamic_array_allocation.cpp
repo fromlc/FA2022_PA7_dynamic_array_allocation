@@ -130,7 +130,7 @@ void displayMedian(RandomArray* p) {
 	int median1, median2;
 	p->getMedianData(median1, median2);
 
-	cout << "\nAveraged median: " << median1 + median2 / 2.0 << "\n";
+	cout << "\nAveraged median: " << (median1 + median2) / 2.0;
 	cout << "\nMedian 1: " << median1;
 	cout << "\nMedian 2: " << median2 << "\n";
 }

@@ -114,6 +114,7 @@ private:
 	void setupModeVars();
 	void setupSecondMode();
 	void setupMedian();
+	void setupMean();
 	//-----------------------------------------------------------------------------
 	// overload operator <<
 	//-----------------------------------------------------------------------------

@@ -46,6 +46,9 @@ RandomArray::RandomArray(int nElements, int xMax) {
 	// copy data to another vector, sort copy, calculate median
 	setupMedian();
 
+	// calculate arithmetic mean
+	setupMean();
+
 	// set default strings for data display
 	setOutputStrings("Person", "acted", "times");
 }
@@ -86,18 +89,7 @@ int RandomArray::getModeValues(int& mode1, int& mode2, int& occurs) const {
 //----------------------------------------------------------------------------
 // calculates arithmetic mean of the array
 //----------------------------------------------------------------------------
-float RandomArray::getMean() {
-	// accumulator
-	int total = 0;
-
-	// accumulate total and calculate mean
-	for (const auto dataItem : m_vData) {
-		total += dataItem;
-	}
-
-	m_mean = (float)total / (float)m_numElements;
-	return m_mean;
-}
+float RandomArray::getMean() { return m_mean; }
 
 //----------------------------------------------------------------------------
 // returns median of the array
@@ -267,6 +259,21 @@ void RandomArray::setupMedian() {
 
 	m_median1 = m_vSortedData.at(mI1);
 	m_median2 = m_vSortedData.at(mI2);
+}
+
+//----------------------------------------------------------------------------
+// calculates arithmetic mean of the array
+//----------------------------------------------------------------------------
+void RandomArray::setupMean() {
+	// accumulator
+	int total = 0;
+
+	// accumulate total and calculate mean
+	for (const auto dataItem : m_vData) {
+		total += dataItem;
+	}
+
+	m_mean = (float)total / (float)m_numElements;
 }
 
 //------------------------------------------------------------------------------
