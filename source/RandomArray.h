@@ -62,20 +62,24 @@ public:
 	//----------------------------------------------------------------------------
 	// getters
 	//----------------------------------------------------------------------------
-	int getMaxDataValue();
-	int getDataItemCount();
+	int getMaxDataValue() const;
+	int getDataItemCount() const;
 
 	//----------------------------------------------------------------------------
 	// updates reference parameters with member variable values
 	// returns true if data set has a single mode, false otherwise
 	//----------------------------------------------------------------------------
-	bool getSingleMode(int& modeOne, int& modeOneOccurs);
+	bool getSingleMode(int& modeOne, int& modeOneOccurs) const;
 	//----------------------------------------------------------------------------
 	// calculates second mode
 	// updates reference parameters with member variable values
 	// returns true if data set has a second mode, false otherwise
 	//----------------------------------------------------------------------------
-	bool getSecondMode(int& modeTwo, int& modeTwoOccurs);
+	bool getSecondMode(int& modeTwo) const;
+	//----------------------------------------------------------------------------
+	// returns number of modes for data set
+	//----------------------------------------------------------------------------
+	int getModeCount() const;
 	//----------------------------------------------------------------------------
 	// calculates arithmetic mean of the array
 	//----------------------------------------------------------------------------

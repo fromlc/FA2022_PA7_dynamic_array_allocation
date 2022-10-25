@@ -56,16 +56,16 @@ RandomArray::~RandomArray() {
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-int RandomArray::getMaxDataValue() { return m_elementMax; }
+int RandomArray::getMaxDataValue() const { return m_elementMax; }
 
 //----------------------------------------------------------------------------
-int RandomArray::getDataItemCount() { return m_numElements; }
+int RandomArray::getDataItemCount() const { return m_numElements; }
 
 //----------------------------------------------------------------------------
 // updates reference params with mode info calculated in setupModeVars()
 // returns true if data set has a single mode, false otherwise
 //----------------------------------------------------------------------------
-bool RandomArray::getSingleMode(int& modeOne, int& modeOneOccurs) {
+bool RandomArray::getSingleMode(int& modeOne, int& modeOneOccurs) const {
 	modeOne = m_modeOne;
 	modeOneOccurs = m_modeOccurs;
 	return m_modeCount == 1;
@@ -75,11 +75,16 @@ bool RandomArray::getSingleMode(int& modeOne, int& modeOneOccurs) {
 // updates reference params with mode info calculated in setupSecondMode()
 // returns true if data set has two modes, false otherwise
 //----------------------------------------------------------------------------
-bool RandomArray::getSecondMode(int& modeTwo, int& modeTwoOccurs) {
+bool RandomArray::getSecondMode(int& modeTwo) const {
 	modeTwo = m_modeTwo;
-	modeTwoOccurs = m_modeOccurs;
 	return m_modeCount == 2;
 }
+
+//----------------------------------------------------------------------------
+// updates reference params with mode info calculated in setupSecondMode()
+// returns true if data set has two modes, false otherwise
+//----------------------------------------------------------------------------
+int RandomArray::getModeCount() const { return m_modeCount; }
 
 //----------------------------------------------------------------------------
 // calculates arithmetic mean of the array
@@ -169,7 +174,7 @@ void RandomArray::setupModeVars() {
 		}
 	}
 
-	// search for a second mode and set mode count to 0, 1, or 2
+	// search for a second mode and set mode count
 	setupSecondMode();
 }
 
@@ -180,13 +185,16 @@ void RandomArray::setupModeVars() {
 //----------------------------------------------------------------------------
 void RandomArray::setupSecondMode() {
 
+	// a mode must occur at least twice
+	if (m_modeOccurs < 2) {
+		m_modeCount = 0;
+		m_modeOne = 0;
+		m_modeTwo = 0;
+		return;
+	}
+
 	// init second mode member vars
 	m_modeCount = 1;	// assume one mode for data set
-	m_modeTwo = 0;
-
-	// a mode must occur at least twice
-	if (m_modeOccurs < 2)
-		return;
 
 	// find a different count value equal to the first mode
 	for (int i = 0; i < m_elementMax; i++) {
@@ -196,14 +204,14 @@ void RandomArray::setupSecondMode() {
 			if (i == m_modeOne) {
 				continue;
 			}
-			// already found second mode, another candidate means zero modes
+			// already found second mode, third candidate means zero modes
 			if (m_modeCount == 2) {
 				m_modeCount = 0;
 				m_modeTwo = 0;
 				m_modeOccurs = 0;
 				return;
 			}
-
+			// candidate second mode, keep looking
 			m_modeCount = 2;
 			m_modeTwo = i;
 		}

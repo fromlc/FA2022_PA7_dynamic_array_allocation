@@ -95,20 +95,16 @@ void displayMode(RandomArray* p) {
 	// display RandomArray data values
 	cout << *p << '\n';
 
-	int modeOne, modeOneOccurs;
-	int modeTwo, modeTwoOccurs;
+	int modeOne, modeTwo, modeOccurs;
 
 	// display mode information
-	if (p->getSingleMode(modeOne, modeOneOccurs)) {
+	if (p->getSingleMode(modeOne, modeOccurs)) {
 		cout << "Mode " << modeOne
-			<< " occurred " << modeOneOccurs << " times\n";
+			<< " occurred " << modeOccurs << " times\n";
 	}
-	else if (p->getSecondMode(modeTwo, modeTwoOccurs)) {
-		cout << "There are two modes.\n";
-		cout << "First mode " << modeOne
-		<< " occurred " << modeOneOccurs << " times\n";
-		cout << "Second mode " << modeTwo
-		<< " occurred " << modeTwoOccurs << " times\n";
+	else if (p->getSecondMode(modeTwo)) {
+		cout << "There are two modes: " << modeOne << " and " 
+			<< modeTwo << " both occurred " << modeOccurs << " times\n";
 	}
 	else {
 		cout << "There is no mode for this data set.\n";
