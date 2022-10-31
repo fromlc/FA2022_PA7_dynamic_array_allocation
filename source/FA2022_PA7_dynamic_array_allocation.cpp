@@ -25,7 +25,7 @@ static constexpr int NO_MODE = -1;
 //------------------------------------------------------------------------------
 // globals
 //------------------------------------------------------------------------------
-const string prompt = "\nEnter the number of students, or a Q: ";
+const string prompt = "\nEnter the number of students (0 quits): ";
 const string errorPrompt("Sorry, that won't work as number of students.");
 
 //------------------------------------------------------------------------------
