@@ -20,15 +20,13 @@ bool _getConsoleInt(int& intInput);
 //------------------------------------------------------------------------------
 // handler for ctrl-c console input
 // 
-// sets keepRunning 0 on ctrl-c entered
+// sets keepRunning to 0 on ctrl-c entered (SIGINT)
 //------------------------------------------------------------------------------
 namespace {
 	volatile sig_atomic_t keepRunning = 1;
 
 	void handleCtrlC(int x) {
-		if (x == SIGINT) {
-			keepRunning = 0;
-		}
+		keepRunning = 0;
 	}
 }
 
