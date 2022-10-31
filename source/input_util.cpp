@@ -89,11 +89,11 @@ bool _getConsoleInt(int& intInput) {
 }
 
 //------------------------------------------------------------------------------
-// positive integer input validation
+// integer greater than zero input validation
 //------------------------------------------------------------------------------
 bool validateInt(int intInput) {
 
-	return (intInput >= 0) ? true : false;
+	return (intInput > 0) ? true : false;
 }
 
 //------------------------------------------------------------------------------
