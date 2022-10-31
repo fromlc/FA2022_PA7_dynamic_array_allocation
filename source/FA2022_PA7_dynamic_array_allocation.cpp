@@ -44,7 +44,6 @@ int getMode(int* ia, int iaElementCount, int& occurred);
 int main() {
 
 	appSetup();
-
 	appLoop();
 
 	cout << "\nGoodbye!\n";
