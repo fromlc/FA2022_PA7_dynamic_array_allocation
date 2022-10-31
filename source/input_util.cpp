@@ -65,7 +65,7 @@ bool _getConsoleInt(int& intInput) {
 	stringstream ss(g_input);
 
 	// check for user wants to quit
-	if (!ss.str().compare("0"))
+	if (!ss.str().compare("q") || !ss.str().compare("Q"))
 		throw UserQuitException();
 
 	// register exceptions we handle in catch blocks
@@ -89,11 +89,11 @@ bool _getConsoleInt(int& intInput) {
 }
 
 //------------------------------------------------------------------------------
-// integer greater than zero input validation
+// integer greater than or equal to zero input validation
 //------------------------------------------------------------------------------
 bool validateInt(int intInput) {
 
-	return (intInput > 0) ? true : false;
+	return (intInput >= 0) ? true : false;
 }
 
 //------------------------------------------------------------------------------
