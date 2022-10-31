@@ -65,7 +65,7 @@ bool _getConsoleInt(int& intInput) {
 	stringstream ss(g_input);
 
 	// check for user wants to quit
-	if (!ss.str().compare("q") || !ss.str().compare("Q"))
+	if (!ss.str().compare("0"))
 		throw UserQuitException();
 
 	// register exceptions we handle in catch blocks
