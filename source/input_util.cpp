@@ -105,4 +105,3 @@ void setPrompts(const string& prompt, const string& errorStr) {
 	g_intPrompt = prompt;
 	g_errorPrompt = errorStr;
 }
-
