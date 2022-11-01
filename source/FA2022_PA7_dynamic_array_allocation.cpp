@@ -174,9 +174,9 @@ int getMode(int& modeOccurs) {
 		int x = *pData;
 
 		//----------------------------------------------------------------------------
-		// -bump count of students that watched x movies
-		// -find the highest count of students watching the same number of movies
-		// -the corresponding number of movies watched will be the mode
+		// -add 1 to count of students who watched x movies
+		// -find highest count of students who watched the same number of movies
+		// -corresponding number of movies watched is be the mode
 		//----------------------------------------------------------------------------
 
 		// point to the count of x movies watched
