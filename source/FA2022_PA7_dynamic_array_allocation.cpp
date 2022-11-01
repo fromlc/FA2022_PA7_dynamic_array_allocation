@@ -112,6 +112,7 @@ void getArrayData() {
 
 	cout << '\n';
 
+	// preserve pointer to data array
 	int* pData = g_pMoviesWatched;
 
 	// fill int array with random numbers and display them
@@ -158,7 +159,7 @@ int getMode(int& modeOccurs) {
 	// students watched between 0 and MAX_MOVIES, inclusive
 	int* pCounts = new int[MAX_MOVIES + 1];
 
-	// zero allocated int array memory
+	// zero memory allocated for counts
 	memset(pCounts, 0, (MAX_MOVIES + 1) * sizeof(int));
 
 	// find a single mode #TODO 
