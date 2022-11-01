@@ -32,11 +32,15 @@ namespace {
 
 //------------------------------------------------------------------------------
 // get one positive integer from console input
+// 
+// prompt is optional parameter, g_intPrompt used by default
 //------------------------------------------------------------------------------
 int getConsoleInt(const string& prompt) {
 
 	// set user prompt to passed string
-	g_intPrompt = prompt;
+	if (!prompt.empty()) {
+		g_intPrompt = prompt;
+	}
 
 	// set up ctrl-c handler
 	signal(SIGINT, handleCtrlC);

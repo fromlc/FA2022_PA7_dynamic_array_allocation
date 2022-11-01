@@ -44,9 +44,11 @@ public:
 //------------------------------------------------------------------------------
 // function prototypes
 //------------------------------------------------------------------------------
-// prompt is an optional parameter, g_intPrompt used by default
-int getConsoleInt(const string& prompt = "Enter a positive integer (Q quits)");
+// prompt is optional parameter, g_intPrompt used by default
+int getConsoleInt(const string& prompt = "");
+// make sure passed value is an integer >= 0
 bool validateInt(int intInput);
+// set user prompt strings g_intPrompt and g_errorPrompt
 void setPrompts(const string& prompt, const string& errorStr);
 
 #endif // !INPUT_UTIL_H
