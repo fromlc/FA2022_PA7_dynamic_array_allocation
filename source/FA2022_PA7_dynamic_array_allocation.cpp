@@ -151,13 +151,14 @@ void reportMode() {
 
 //------------------------------------------------------------------------------
 // -returns the mode of int data array g_pMoviesWatched with
-//		 g_numStudents elements
-// -calculates a single mode #TODO some data sets have two modes
+//		 g_numStudents elements, or NO_MODE
+// -calculates a single mode
 // -updates int reference parameter to number of times the mode occurred
 // -if all elements occurred the same number of times,
 //		there is no mode
 // -if > 1 elements occurred the same number of times as the mode,
 //		there is no mode
+// -#TODO some data sets have two modes
 //------------------------------------------------------------------------------
 int getMode(int& modeOccurs) {
 
@@ -167,10 +168,10 @@ int getMode(int& modeOccurs) {
 	// initialize reference parameter
 	modeOccurs = 0;
 
-	// track element occurrences with vector
+	// track count occurrences
 	vector<int> vCounts;
 
-	//  must force needed number of counts in vector
+	// must force needed number of counts in vector
 	vCounts.resize(MAX_MOVIES + 1, 0);
 
 	// save data array start address
@@ -188,8 +189,9 @@ int getMode(int& modeOccurs) {
 		// -corresponding number of movies watched is the mode
 		//----------------------------------------------------------------------------
 
-		// increase count of students watched x movies
+		// increase count of students who watched x movies
 		// and check whether x is the new mode
+
 		if (++vCounts.at(x) > modeOccurs) {
 			modeOccurs = vCounts.at(x);
 			mode = x;
@@ -248,11 +250,10 @@ int actualMode(vector<int>& v, int mode, int modeOccurs) {
 		}
 	}
 
-	// no mode when 2+ data elements occurred same number of times as mode
-	if (vModes.size() > 1) {
-		return NO_MODE;
-	}
-
-	// data array has one mode 
-	return mode;
+	// -------------------------------------------------------------------------
+	// return:
+	//		NO_MODE if 2+ counts occurred same number of times as mode,
+	//		passed value of mode otherwise
+	// -------------------------------------------------------------------------
+	return (vModes.size() > 1) ? NO_MODE : mode;
 }
