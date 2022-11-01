@@ -42,6 +42,7 @@ int getNumStudents();
 void reportMode();
 void getArrayData();
 int getMode(int& modeOccurs);
+int actualMode(vector<int>& v, int mode, int modeOccurs);
 
 //------------------------------------------------------------------------------
 // entry point
@@ -124,7 +125,7 @@ void getArrayData() {
 	for (int i = 0; i < g_numStudents; i++, pData++) {
 
 		*pData = rand() % MAX_MOVIES;
-		cout << "Student " << i + 1 
+		cout << "Student " << i + 1
 			<< " watched: " << *pData << " movies\n";
 	}
 }
@@ -139,7 +140,7 @@ void reportMode() {
 	int mode = getMode(occurrenceCount);
 
 	if (mode == NO_MODE) {
-		cout << "\nNo mode\n";
+		cout << "\nNo single mode exists\n";
 	}
 	else {
 		// display the mode
@@ -153,27 +154,29 @@ void reportMode() {
 //		 g_numStudents elements
 // -calculates a single mode #TODO some data sets have two modes
 // -updates int reference parameter to number of times the mode occurred
-// -if no element occurred more than once, there is no mode
+// -if all elements occurred the same number of times,
+//		there is no mode
+// -if > 1 elements occurred the same number of times as the mode,
+//		there is no mode
 //------------------------------------------------------------------------------
 int getMode(int& modeOccurs) {
-
-	// track element occurrences with reference parameter
-	modeOccurs = 0;
-
-	// dynamically allocate int array to hold counts of movies watched
-	// students watched between 0 and MAX_MOVIES, inclusive
-	int* pCounts = new int[MAX_MOVIES + 1];
-
-	// zero memory allocated for counts
-	memset(pCounts, 0, (MAX_MOVIES + 1) * sizeof(int));
 
 	// find a single mode #TODO 
 	int mode = 0;
 
+	// initialize reference parameter
+	modeOccurs = 0;
+
+	// track element occurrences with vector
+	vector<int> vCounts;
+
+	//  must force needed number of counts in vector
+	vCounts.resize(MAX_MOVIES + 1, 0);
+
 	// save data array start address
 	int* pData = g_pMoviesWatched;
 
-	// find data array mode
+	// find the mode of data array
 	for (int i = 0; i < g_numStudents; i++, pData++) {
 
 		// x is the number of movies that student #i watched
@@ -182,65 +185,74 @@ int getMode(int& modeOccurs) {
 		//----------------------------------------------------------------------------
 		// -add 1 to count of students who watched x movies
 		// -find highest count of students who watched the same number of movies
-		// -corresponding number of movies watched is be the mode
+		// -corresponding number of movies watched is the mode
 		//----------------------------------------------------------------------------
 
-		// point to the count of x movies watched
-		int* pThisCount = (pCounts + x);
-
 		// increase count of students watched x movies
-		++(*pThisCount);
-
-		// check whether this count is the new mode
-		if ((*pThisCount) > modeOccurs) {
-			modeOccurs = *pThisCount;
+		// and check whether x is the new mode
+		if (++vCounts.at(x) > modeOccurs) {
+			modeOccurs = vCounts.at(x);
 			mode = x;
 		}
 	}
 
-	// preserve pointer to allocated array memory for delete[]
-	int* pC = pCounts;
-
-	// report how many times each element occurred
-	for (int i = 0; i <= MAX_MOVIES; i++, pC++) {
-		if (*pC) {
-			cout << '\n' << *pC << " students watched " << i << " movies";
+	// display how many times each element occurred
+	int vIndex = 0;
+	for (int count : vCounts) {
+		if (count > 0) {
+			cout << '\n' << count << " students watched "
+				<< vIndex << " movies";
 		}
+		vIndex++;
 	}
+
 	cout << '\n';
 
 	//--------------------------------------------------------------------------
 	// report mode, or that there is no mode
 	//--------------------------------------------------------------------------
-	
-	// return this value
-	int actualMode = NO_MODE;
+	return modeOccurs < 2 ? NO_MODE : actualMode(vCounts, mode, modeOccurs);
+}
 
-	// mode must occur more than once
-	if (modeOccurs >= 2) {
+// ---------------------------------------------------------------------
+// screen further for no mode, or no single mode
+// ---------------------------------------------------------------------
+int actualMode(vector<int>& v, int mode, int modeOccurs) {
 
-		// preserve pointer to allocated array memory for delete[]
-		pC = pCounts;
+	// -------------------------------------------------------------------------
+	// check for all counts the same, if so there's no mode
+	// -------------------------------------------------------------------------
+	bool allCountsSame = true;
+	int x = v.back();
 
-		// ---------------------------------------------------------------------
-		// check for all counts the same, if so there's no mode
-		// ---------------------------------------------------------------------
-		vector<int> vCounts{};
-		for (int i = 0; i < MAX_MOVIES; i++, pC++) {
-			vCounts.push_back(*pC);
-		}
-
-		int x = vCounts.back();
-		for (int element : vCounts) {
-			if (element != x) {
-				actualMode = mode;
-				break;
-			}
+	for (int count : v) {
+		if (count != x) {
+			allCountsSame = false;
+			break;
 		}
 	}
 
-	// release dynamically allocated array memory
-	delete[] pCounts;
+	if (allCountsSame) {
+		return NO_MODE;
+	}
 
-	return actualMode;
+	// -------------------------------------------------------------------------
+	// check for more than 1 mode, if so there's no mode #TODO
+	// -------------------------------------------------------------------------
+	vector<int> vModes{};
+
+	// check for same number of occurrences as mode
+	for (int count : v) {
+		if (count == modeOccurs) {
+			vModes.push_back(count);
+		}
+	}
+
+	// no mode when 2+ data elements occurred same number of times as mode
+	if (vModes.size() > 1) {
+		return NO_MODE;
+	}
+
+	// data array has one mode 
+	return mode;
 }
