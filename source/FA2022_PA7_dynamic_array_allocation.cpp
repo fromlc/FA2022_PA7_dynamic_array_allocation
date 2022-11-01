@@ -46,8 +46,6 @@ int main() {
 	appSetup();
 	appLoop();
 
-	cout << "\nGoodbye!\n";
-
 	return 0;
 }
 
@@ -84,6 +82,8 @@ inline void appLoop() {
 		// release dynamically allocated array memory
 		delete[] moviesWatched;
 	}
+
+	cout << "\nGoodbye!\n";
 }
 
 //------------------------------------------------------------------------------
@@ -104,15 +104,16 @@ int getNumStudents() {
 //------------------------------------------------------------------------------
 // fill array with data, #TODO random numbers for now
 //------------------------------------------------------------------------------
-void getArrayData(int* pWatched, int numStudents) {
+void getArrayData(int* pNumWatched, int numStudents) {
 
 	cout << '\n';
 
 	// fill int array with random numbers and display them
-	for (int i = 0; i < numStudents; i++, pWatched++) {
+	for (int i = 0; i < numStudents; i++, pNumWatched++) {
 
-		*pWatched = rand() % MAX_MOVIES;
-		cout << "Student " << i + 1 << " watched: " << *pWatched << " movies\n";
+		*pNumWatched = rand() % MAX_MOVIES;
+		cout << "Student " << i + 1 
+			<< " watched: " << *pNumWatched << " movies\n";
 	}
 }
 
