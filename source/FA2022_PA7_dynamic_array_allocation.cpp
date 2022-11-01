@@ -219,15 +219,15 @@ int getMode(int& modeOccurs) {
 // ---------------------------------------------------------------------
 // screen further for no mode, or no single mode
 // ---------------------------------------------------------------------
-int actualMode(vector<int>& v, int mode, int modeOccurs) {
+int actualMode(vector<int>& vCounts, int mode, int modeOccurs) {
 
 	// -------------------------------------------------------------------------
 	// check for all counts the same, if so there's no mode
 	// -------------------------------------------------------------------------
 	bool allCountsSame = true;
-	int x = v.back();
+	int x = vCounts.back();
 
-	for (int count : v) {
+	for (int count : vCounts) {
 		if (count != x) {
 			allCountsSame = false;
 			break;
@@ -241,12 +241,12 @@ int actualMode(vector<int>& v, int mode, int modeOccurs) {
 	// -------------------------------------------------------------------------
 	// check for more than 1 mode, if so there's no mode #TODO
 	// -------------------------------------------------------------------------
-	vector<int> vModes{};
+	vector<int> v{};
 
 	// check for same number of occurrences as mode
-	for (int count : v) {
+	for (int count : vCounts) {
 		if (count == modeOccurs) {
-			vModes.push_back(count);
+			v.push_back(count);
 		}
 	}
 
@@ -255,5 +255,5 @@ int actualMode(vector<int>& v, int mode, int modeOccurs) {
 	//		NO_MODE if 2+ counts occurred same number of times as mode,
 	//		passed value of mode otherwise
 	// -------------------------------------------------------------------------
-	return (vModes.size() > 1) ? NO_MODE : mode;
+	return (v.size() > 1) ? NO_MODE : mode;
 }
