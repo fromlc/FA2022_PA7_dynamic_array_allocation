@@ -47,6 +47,6 @@ public:
 // prompt is an optional parameter, g_intPrompt used by default
 int getConsoleInt(const string& prompt = "Enter a positive integer (Q quits)");
 bool validateInt(int intInput);
-void setErrorPrompt(const string& errorStr);
+void setPrompts(const string& prompt, const string& errorStr);
 
 #endif // !INPUT_UTIL_H

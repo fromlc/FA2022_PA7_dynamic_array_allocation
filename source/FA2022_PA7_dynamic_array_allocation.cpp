@@ -25,7 +25,7 @@ static constexpr int NO_MODE = -1;
 //------------------------------------------------------------------------------
 // globals
 //------------------------------------------------------------------------------
-const string prompt = "\nEnter the number of students (0 quits): ";
+const string prompt = "\nEnter the number of students (0 or Q quits): ";
 const string errorPrompt("Sorry, that won't work as number of students.");
 
 //------------------------------------------------------------------------------
@@ -34,9 +34,9 @@ const string errorPrompt("Sorry, that won't work as number of students.");
 inline void appSetup();
 inline void appLoop();
 int getNumStudents();
-void reportMode(int* moviesWatched, int numStudents);
-void getArrayData(int* moviesWatched, int numStudents);
-int getMode(int* ia, int iaElementCount, int& occurred);
+void reportMode(int* pData, int numStudents);
+void getArrayData(int* pData, int numStudents);
+int getMode(int* pData, int elementCount, int& modeOccurs);
 
 //------------------------------------------------------------------------------
 // entry point
@@ -61,7 +61,7 @@ inline void appSetup() {
 	cout << "\n\nCalculate mode for number of movies";
 	cout << " that students watched in one month\n\n";
 
-	setErrorPrompt(errorPrompt);
+	setPrompts(prompt, errorPrompt);
 }
 
 //------------------------------------------------------------------------------
@@ -119,11 +119,11 @@ void getArrayData(int* pWatched, int numStudents) {
 //------------------------------------------------------------------------------
 // display the mode of the passed array
 //------------------------------------------------------------------------------
-void reportMode(int* moviesWatched, int numStudents) {
+void reportMode(int* pData, int numStudents) {
 
 	// find the mode of the filled array
 	int occurrenceCount = 0;
-	int mode = getMode(moviesWatched, numStudents, occurrenceCount);
+	int mode = getMode(pData, numStudents, occurrenceCount);
 
 	if (mode == NO_MODE) {
 		cout << "\nNo mode\n";
@@ -141,10 +141,10 @@ void reportMode(int* moviesWatched, int numStudents) {
 // -updates int reference parameter to number of times the mode occurred
 // -if no element occurred more than once, there is no mode
 //------------------------------------------------------------------------------
-int getMode(int* pIa, int iaElementCount, int& occurred) {
+int getMode(int* pData, int elementCount, int& modeOccurs) {
 
 	// track element occurrences with reference parameter
-	occurred = 0;
+	modeOccurs = 0;
 
 	// dynamically allocate int array to hold counts of movies watched
 	// students watched between 0 and MAX_MOVIES, inclusive
@@ -157,10 +157,10 @@ int getMode(int* pIa, int iaElementCount, int& occurred) {
 	int mode = 0;
 
 	// calculate mode
-	for (int i = 0; i < iaElementCount; i++, pIa++) {
+	for (int i = 0; i < elementCount; i++, pData++) {
 
 		// x is the number of movies that student #i watched
-		int x = *pIa;
+		int x = *pData;
 
 		//----------------------------------------------------------------------------
 		// -bump count of students that watched x movies
@@ -168,8 +168,8 @@ int getMode(int* pIa, int iaElementCount, int& occurred) {
 		// -the corresponding number of movies watched will be the mode
 		//----------------------------------------------------------------------------
 
-		if (++(pCounts[x]) > occurred) {
-			occurred = pCounts[x];
+		if (++(*(pCounts + x)) > modeOccurs) {
+			modeOccurs = *(pCounts + x);
 			mode = x;
 		}
 	}
@@ -189,5 +189,5 @@ int getMode(int* pIa, int iaElementCount, int& occurred) {
 	delete[] pCounts;
 
 	// report the mode, or no mode condition
-	return (occurred < 2) ? NO_MODE : mode;
+	return (modeOccurs < 2) ? NO_MODE : mode;
 }
