@@ -74,11 +74,11 @@ bool _getConsoleInt(int& intInput) {
 		return validateInt(intInput);
 	}
 	catch (stringstream::failure e) {
-		// timing loop
+		// timing loop waits for possible signal
 		for (int i = 0; i < IU_WAIT; i++);
 
 		if (!keepRunning) {
-			// signal was set
+			// signal was set by handleCtrlC() on SIGINT
 			cerr << "^C\n";
 			exit(IU_CONTROLC);
 		}
