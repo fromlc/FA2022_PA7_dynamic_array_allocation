@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "input_util.h"
 
@@ -15,6 +16,7 @@
 using std::cin;
 using std::cout;
 using std::string;
+using std::vector;
 
 //------------------------------------------------------------------------------
 // constants
@@ -53,15 +55,17 @@ int main() {
 }
 
 //------------------------------------------------------------------------------
-// display app banner
+// app setup tasks
 //------------------------------------------------------------------------------
 inline void appSetup() {
 	// seed random number generator
 	srand((unsigned int)time(0));
 
+	// app banner
 	cout << "\n\nCalculate mode for number of movies";
 	cout << " that students watched in one month\n\n";
 
+	// set user prompts used by getConsoleInt()
 	setPrompts(prompt, errorPrompt);
 }
 
@@ -97,10 +101,11 @@ int getNumStudents() {
 	// getConsoleInt() displays this string on bad input
 	try {
 		// prompt for int input
-		return getConsoleInt(prompt);
+		return getConsoleInt();
 	}
 	catch (UserQuitException& e) {
-		e;		// #TODO prevents unreferenced local var e
+		// #TODO prevents unreferenced local var e warning
+		e;
 		return 0;
 	}
 }
@@ -204,9 +209,38 @@ int getMode(int& modeOccurs) {
 	}
 	cout << '\n';
 
+	//--------------------------------------------------------------------------
+	// report mode, or that there is no mode
+	//--------------------------------------------------------------------------
+	
+	// return this value
+	int actualMode = NO_MODE;
+
+	// mode must occur more than once
+	if (modeOccurs >= 2) {
+
+		// preserve pointer to allocated array memory for delete[]
+		pC = pCounts;
+
+		// ---------------------------------------------------------------------
+		// check for all counts the same, if so there's no mode
+		// ---------------------------------------------------------------------
+		vector<int> vCounts{};
+		for (int i = 0; i < MAX_MOVIES; i++, pC++) {
+			vCounts.push_back(*pC);
+		}
+
+		int x = vCounts.back();
+		for (int element : vCounts) {
+			if (element != x) {
+				actualMode = mode;
+				break;
+			}
+		}
+	}
+
 	// release dynamically allocated array memory
 	delete[] pCounts;
 
-	// report the mode, or no mode condition
-	return (modeOccurs < 2) ? NO_MODE : mode;
+	return actualMode;
 }
