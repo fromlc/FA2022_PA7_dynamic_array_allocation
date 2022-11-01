@@ -25,6 +25,9 @@ static constexpr int NO_MODE = -1;
 //------------------------------------------------------------------------------
 // globals
 //------------------------------------------------------------------------------
+static int* g_pMoviesWatched = nullptr;
+static int g_numStudents = 0;
+
 const string prompt = "\nEnter the number of students (0 or Q quits): ";
 const string errorPrompt("Sorry, that won't work as number of students.");
 
@@ -34,9 +37,9 @@ const string errorPrompt("Sorry, that won't work as number of students.");
 inline void appSetup();
 inline void appLoop();
 int getNumStudents();
-void reportMode(int* pData, int numStudents);
-void getArrayData(int* pData, int numStudents);
-int getMode(int* pData, int elementCount, int& modeOccurs);
+void reportMode();
+void getArrayData();
+int getMode(int& modeOccurs);
 
 //------------------------------------------------------------------------------
 // entry point
@@ -66,21 +69,21 @@ inline void appSetup() {
 // user input loop, 0 quits
 //------------------------------------------------------------------------------
 inline void appLoop() {
+
 	// loop until user quits
-	int ns;
-	while ((ns = getNumStudents()) > 0) {
+	while ((g_numStudents = getNumStudents()) > 0) {
 
 		// dynamically allocate array for number of movies each student watched
-		int* moviesWatched = new int[ns];
+		g_pMoviesWatched = new int[g_numStudents];
 
 		// fill array with random data #TODO read from file?
-		getArrayData(moviesWatched, ns);
+		getArrayData();
 
 		// find and display the mode of the array 
-		reportMode(moviesWatched, ns);
+		reportMode();
 
 		// release dynamically allocated array memory
-		delete[] moviesWatched;
+		delete[] g_pMoviesWatched;
 	}
 
 	cout << "\nGoodbye!\n";
@@ -97,6 +100,7 @@ int getNumStudents() {
 		return getConsoleInt(prompt);
 	}
 	catch (UserQuitException& e) {
+		e;		// #TODO prevents unreferenced local var e
 		return 0;
 	}
 }
@@ -104,45 +108,48 @@ int getNumStudents() {
 //------------------------------------------------------------------------------
 // fill array with data, #TODO random numbers for now
 //------------------------------------------------------------------------------
-void getArrayData(int* pNumWatched, int numStudents) {
+void getArrayData() {
 
 	cout << '\n';
 
-	// fill int array with random numbers and display them
-	for (int i = 0; i < numStudents; i++, pNumWatched++) {
+	int* pData = g_pMoviesWatched;
 
-		*pNumWatched = rand() % MAX_MOVIES;
+	// fill int array with random numbers and display them
+	for (int i = 0; i < g_numStudents; i++, pData++) {
+
+		*pData = rand() % MAX_MOVIES;
 		cout << "Student " << i + 1 
-			<< " watched: " << *pNumWatched << " movies\n";
+			<< " watched: " << *pData << " movies\n";
 	}
 }
 
 //------------------------------------------------------------------------------
-// display the mode of the passed array
+// display the mode of the g_pMoviesWatched data array
 //------------------------------------------------------------------------------
-void reportMode(int* pData, int numStudents) {
+void reportMode() {
 
 	// find the mode of the filled array
 	int occurrenceCount = 0;
-	int mode = getMode(pData, numStudents, occurrenceCount);
+	int mode = getMode(occurrenceCount);
 
 	if (mode == NO_MODE) {
 		cout << "\nNo mode\n";
 	}
 	else {
-		// report the mode of the moviesWatched array
+		// display the mode
 		cout << "\nMode " << mode
 			<< " occurred " << occurrenceCount << " times\n";
 	}
 }
 
 //------------------------------------------------------------------------------
-// -returns the mode of the passed int array of given element count
+// -returns the mode of int data array g_pMoviesWatched with
+//		 g_numStudents elements
 // -calculates a single mode #TODO some data sets have two modes
 // -updates int reference parameter to number of times the mode occurred
 // -if no element occurred more than once, there is no mode
 //------------------------------------------------------------------------------
-int getMode(int* pData, int elementCount, int& modeOccurs) {
+int getMode(int& modeOccurs) {
 
 	// track element occurrences with reference parameter
 	modeOccurs = 0;
@@ -157,8 +164,11 @@ int getMode(int* pData, int elementCount, int& modeOccurs) {
 	// find a single mode #TODO 
 	int mode = 0;
 
-	// calculate mode
-	for (int i = 0; i < elementCount; i++, pData++) {
+	// save data array start address
+	int* pData = g_pMoviesWatched;
+
+	// find data array mode
+	for (int i = 0; i < g_numStudents; i++, pData++) {
 
 		// x is the number of movies that student #i watched
 		int x = *pData;
@@ -169,13 +179,20 @@ int getMode(int* pData, int elementCount, int& modeOccurs) {
 		// -the corresponding number of movies watched will be the mode
 		//----------------------------------------------------------------------------
 
-		if (++(*(pCounts + x)) > modeOccurs) {
-			modeOccurs = *(pCounts + x);
+		// point to the count of x movies watched
+		int* pThisCount = (pCounts + x);
+
+		// increase count of students watched x movies
+		++(*pThisCount);
+
+		// check whether this count is the new mode
+		if ((*pThisCount) > modeOccurs) {
+			modeOccurs = *pThisCount;
 			mode = x;
 		}
 	}
 
-	// preserve original pointer to allocated array memory for delete[]
+	// preserve pointer to allocated array memory for delete[]
 	int* pC = pCounts;
 
 	// report how many times each element occurred
