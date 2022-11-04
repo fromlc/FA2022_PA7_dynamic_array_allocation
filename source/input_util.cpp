@@ -99,9 +99,12 @@ bool validateInt(int intInput) {
 }
 
 //------------------------------------------------------------------------------
-// set strings for prompting user and displaying error
+// set strings for user prompt and (optionally) error display
 //------------------------------------------------------------------------------
 void setPrompts(const string& prompt, const string& errorStr) {
 	g_intPrompt = prompt;
-	g_errorPrompt = errorStr;
+
+	if (errorStr.compare("")) {
+		g_errorPrompt = errorStr;
+	}
 }

@@ -24,7 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\input_util.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

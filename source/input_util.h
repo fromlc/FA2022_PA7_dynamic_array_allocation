@@ -48,7 +48,7 @@ public:
 int getConsoleInt(const string& prompt = "");
 // make sure passed value is an integer >= 0
 bool validateInt(int intInput);
-// set user prompt strings g_intPrompt and g_errorPrompt
-void setPrompts(const string& prompt, const string& errorStr);
+// set user prompt strings g_intPrompt and optionally g_errorPrompt
+void setPrompts(const string& prompt, const string& errorStr = "");
 
 #endif // !INPUT_UTIL_H
