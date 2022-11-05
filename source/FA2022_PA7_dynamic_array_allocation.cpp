@@ -161,7 +161,7 @@ void reportMode() {
 
 	case 2:
 		cout << "\nModes " << mode1 << " and " << mode2
-			<< " occurred " << modeOccurs << " times\n";
+			<< " each occurred " << modeOccurs << " times\n";
 		return;
 
 	default:
@@ -219,7 +219,7 @@ int getMode(int& mode1, int& mode2, int& modeOccurs) {
 	// assume one mode
 	int modeCount = 1;
 
-	// find other counts that occurred the same number of times
+	// find other counts that occurred same number of times mode1 did
 	for (auto it = dataOccurs.begin(); it != dataOccurs.end(); it++) {
 
 		if (it->second == modeOccurs && it->first != mode1) {
