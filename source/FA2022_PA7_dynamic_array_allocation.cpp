@@ -149,8 +149,7 @@ void reportMode() {
 	int mode1, mode2;
 	int modeOccurs = 0;
 
-	int modeCount = getMode(mode1, mode2, modeOccurs);
-	switch (modeCount) {
+	switch (getMode(mode1, mode2, modeOccurs)) {
 	case 0:
 		cout << "\nNo mode exists for this dataset\n";
 		return;
