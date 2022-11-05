@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#include <vector>
+#include <unordered_map>
 
 #include "input_util.h"
 
@@ -16,13 +16,18 @@
 using std::cin;
 using std::cout;
 using std::string;
-using std::vector;
+using std::unordered_map;
+
+//------------------------------------------------------------------------------
+// conditional compiles
+//------------------------------------------------------------------------------
+// ALL_ONES is defined the data set contains all 1's 
+//#define ALL_ONES		// comment this line to generate random numbers
 
 //------------------------------------------------------------------------------
 // constants
 //------------------------------------------------------------------------------
 static constexpr int MAX_MOVIES = 10;
-static constexpr int NO_MODE = -1;
 
 //------------------------------------------------------------------------------
 // globals
@@ -39,10 +44,9 @@ const string errorPrompt("Sorry, that won't work as number of students.");
 inline void appSetup();
 inline void appLoop();
 int getNumStudents();
+void loadArrayData();
 void reportMode();
-void getArrayData();
-int getMode(int& modeOccurs);
-int actualMode(vector<int>& v, int mode, int modeOccurs);
+int getMode(int& mode1, int& mode2, int& modeOccurs);
 
 //------------------------------------------------------------------------------
 // entry point
@@ -74,6 +78,8 @@ inline void appSetup() {
 // user input loop, 0 quits
 //------------------------------------------------------------------------------
 inline void appLoop() {
+	int mode = 0;
+	int modeOccurs = 0;
 
 	// loop until user quits
 	while ((g_numStudents = getNumStudents()) > 0) {
@@ -82,9 +88,9 @@ inline void appLoop() {
 		g_pMoviesWatched = new int[g_numStudents];
 
 		// fill array with random data #TODO read from file?
-		getArrayData();
+		loadArrayData();
 
-		// find and display the mode of the array 
+		// find and display the mode of the array
 		reportMode();
 
 		// release dynamically allocated array memory
@@ -114,7 +120,7 @@ int getNumStudents() {
 //------------------------------------------------------------------------------
 // fill array with data, #TODO random numbers for now
 //------------------------------------------------------------------------------
-void getArrayData() {
+void loadArrayData() {
 
 	cout << '\n';
 
@@ -124,7 +130,12 @@ void getArrayData() {
 	// fill int array with random numbers and display them
 	for (int i = 0; i < g_numStudents; i++, pData++) {
 
+#ifdef ALL_ONES
+		// specific test case: all data values are the same
+		*pData = 1;
+#else
 		*pData = rand() % MAX_MOVIES;
+#endif
 		cout << "Student " << i + 1
 			<< " watched: " << *pData << " movies\n";
 	}
@@ -136,124 +147,88 @@ void getArrayData() {
 void reportMode() {
 
 	// find the mode of the filled array
-	int occurrenceCount = 0;
-	int mode = getMode(occurrenceCount);
+	int mode1, mode2;
+	int modeOccurs = 0;
 
-	if (mode == NO_MODE) {
-		cout << "\nNo single mode exists\n";
-	}
-	else {
-		// display the mode
-		cout << "\nMode " << mode
-			<< " occurred " << occurrenceCount << " times\n";
+	int modeCount = getMode(mode1, mode2, modeOccurs);
+	switch (modeCount) {
+	case 0:
+		cout << "\nNo mode exists for this dataset\n";
+		return;
+
+	case 1:
+		cout << "\nMode " << mode1
+			<< " occurred " << modeOccurs << " times\n";
+		return;
+
+	case 2:
+		cout << "\nModes " << mode1 << " and " << mode2
+			<< " occurred " << modeOccurs << " times\n";
+		return;
+
+	default:
+		cout << "Error in getMode()\n";
 	}
 }
 
 //------------------------------------------------------------------------------
-// -returns the mode of int data array g_pMoviesWatched with
-//		 g_numStudents elements, or NO_MODE
-// -calculates a single mode
-// -updates int reference parameter to number of times the mode occurred
+// -returns the number of modes in data array g_pMoviesWatched with
+// -updates int reference parameters
 // -if all elements occurred the same number of times,
 //		there is no mode
 // -if > 1 elements occurred the same number of times as the mode,
 //		there is no mode
-// -#TODO some data sets have two modes
 //------------------------------------------------------------------------------
-int getMode(int& modeOccurs) {
+int getMode(int& mode1, int& mode2, int& modeOccurs) {
 
-	// find a single mode #TODO 
-	int mode = 0;
+	//--------------------------------------------------------------------------
+	// maps contain <key, value> pairs
+	// dataOccurs will contain these pairs:
+	//		key = x, number of movies watched
+	//		value = number of students who watched x movies
+	//--------------------------------------------------------------------------
+	unordered_map<int, int> dataOccurs;
 
-	// initialize reference parameter
-	modeOccurs = 0;
-
-	// track count occurrences
-	vector<int> vCounts;
-
-	// must force needed number of counts in vector
-	vCounts.resize(MAX_MOVIES + 1, 0);
-
-	// save data array start address
+	// use working pointer pData to preserve address in g_pMoviesWatched
 	int* pData = g_pMoviesWatched;
 
-	// find the mode of data array
+	//--------------------------------------------------------------------------
+	// fill dataOccurs map with <key, value> pairs
+	//		key = x, number of movies watched
+	//		value = number of students who watched x movies
+	//--------------------------------------------------------------------------
 	for (int i = 0; i < g_numStudents; i++, pData++) {
+		dataOccurs[*pData]++;
+	}
 
-		// x is the number of movies that student #i watched
-		int x = *pData;
+	// initialize reference parameters
+	modeOccurs = 1;
 
-		//----------------------------------------------------------------------------
-		// -add 1 to count of students who watched x movies
-		// -find highest count of students who watched the same number of movies
-		// -corresponding number of movies watched is the mode
-		//----------------------------------------------------------------------------
-
-		// increase count of students who watched x movies
-		// and check whether x is the new mode
-
-		if (++vCounts.at(x) > modeOccurs) {
-			modeOccurs = vCounts.at(x);
-			mode = x;
+	// find the biggest number of occurrences
+	// this will be the mode, or the first of two modes
+	for (auto it = dataOccurs.begin(); it != dataOccurs.end(); it++) {
+		if (it->second > modeOccurs) {
+			mode1 = it->first;
+			modeOccurs = it->second;
 		}
 	}
 
-	// display how many times each element occurred
-	int vIndex = 0;
-	for (int count : vCounts) {
-		if (count > 0) {
-			cout << '\n' << count << " students watched "
-				<< vIndex << " movies";
-		}
-		vIndex++;
-	}
+	// assume one mode
+	int modeCount = 1;
 
-	cout << '\n';
+	// find other counts that occurred the same number of times
+	for (auto it = dataOccurs.begin(); it != dataOccurs.end(); it++) {
 
-	//--------------------------------------------------------------------------
-	// report mode, or that there is no mode
-	//--------------------------------------------------------------------------
-	return modeOccurs < 2 ? NO_MODE : actualMode(vCounts, mode, modeOccurs);
-}
+		if (it->second == modeOccurs && it->first != mode1) {
+			
+			// 2 modes max
+			if (++modeCount > 2) {
+				return 0;
+			}
 
-// ---------------------------------------------------------------------
-// screen further for no mode, or no single mode
-// ---------------------------------------------------------------------
-int actualMode(vector<int>& vCounts, int mode, int modeOccurs) {
-
-	// -------------------------------------------------------------------------
-	// check for all counts the same, if so there's no mode
-	// -------------------------------------------------------------------------
-	bool allCountsSame = true;
-	int x = vCounts.back();
-
-	for (int count : vCounts) {
-		if (count != x) {
-			allCountsSame = false;
-			break;
+			mode2 = it->first;
 		}
 	}
 
-	if (allCountsSame) {
-		return NO_MODE;
-	}
-
-	// -------------------------------------------------------------------------
-	// check for more than 1 mode, if so there's no mode #TODO
-	// -------------------------------------------------------------------------
-	vector<int> v{};
-
-	// check for same number of occurrences as mode
-	for (int count : vCounts) {
-		if (count == modeOccurs) {
-			v.push_back(count);
-		}
-	}
-
-	// -------------------------------------------------------------------------
-	// return:
-	//		NO_MODE if 2+ counts occurred same number of times as mode,
-	//		passed value of mode otherwise
-	// -------------------------------------------------------------------------
-	return (v.size() > 1) ? NO_MODE : mode;
+	return modeCount;
 }
