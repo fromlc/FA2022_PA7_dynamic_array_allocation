@@ -212,6 +212,11 @@ int getMode(int& mode1, int& mode2, int& modeOccurs) {
 		}
 	}
 
+	// if all data items occur once, there is no mode
+	if (modeOccurs == 1) {
+		return 0;
+	}
+
 	// assume one mode
 	int modeCount = 1;
 
