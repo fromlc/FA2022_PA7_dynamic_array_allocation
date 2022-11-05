@@ -13,7 +13,6 @@
 //------------------------------------------------------------------------------
 // using symbols
 //------------------------------------------------------------------------------
-using std::cin;
 using std::cout;
 using std::string;
 using std::unordered_map;
@@ -35,8 +34,8 @@ static constexpr int MAX_MOVIES = 10;
 static int* g_pMoviesWatched = nullptr;
 static int g_numStudents = 0;
 
-const string prompt = "\nEnter the number of students (0 or Q quits): ";
-const string errorPrompt("Sorry, that won't work as number of students.");
+const string g_prompt = "\nEnter the number of students (0 or Q quits): ";
+const string g_errorPrompt("Sorry, that won't work as number of students.");
 
 //------------------------------------------------------------------------------
 // local function prototypes
@@ -71,7 +70,7 @@ inline void appSetup() {
 	cout << " that students watched in one month\n\n";
 
 	// set user prompts used by getConsoleInt()
-	setPrompts(prompt, errorPrompt);
+	setPrompts(g_prompt, g_errorPrompt);
 }
 
 //------------------------------------------------------------------------------
